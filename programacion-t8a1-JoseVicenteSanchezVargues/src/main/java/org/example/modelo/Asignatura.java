@@ -27,6 +27,7 @@ public class Asignatura implements Mostrable{
         super();
     }
 
+    public int getCodigo() { return codigo; }
     public String getNombre() { return nombre; }
     public Profesor getProfesor() { return profesor; }
 

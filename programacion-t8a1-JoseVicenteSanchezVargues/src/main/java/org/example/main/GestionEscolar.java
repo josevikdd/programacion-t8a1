@@ -14,17 +14,10 @@ public class GestionEscolar {
     // Se hace final para que no se pueda cambiar ni reasignar de nuevo
     private static final List<Curso> cursos = new ArrayList<>();
     private static final Scanner sc = new Scanner(System.in);
-    // Cargamos los datos
-    private static final DatosEstaticos de = new DatosEstaticos();
     //Creamos los objetos DAO
     private static CursoDAOImpl cursoDAOImpl = FactoriaDAO.getCursoDAO();
 
     public static void main(String[] args) {
-
-        //Crear metodo para cargar cursos y comprobar que funciona.
-        cargarCursos();
-        //Metodo para probar añadir y actualizar
-        //añadirActualizar();
 
         int opcion;
 
@@ -54,43 +47,6 @@ public class GestionEscolar {
             }
 
         } while (opcion != 0);
-    }
-
-    private static void cargarCursos() {
-        List<Curso> cursostest = cursoDAOImpl.getAll();
-
-        if ((cursostest != null) && (!cursostest.isEmpty())){
-            System.out.println("********************");
-            System.out.println("*** LISTA DE CURSOS ****");
-            System.out.println("********************");
-
-            for (Curso curso : cursostest) {
-                System.out.println(curso.toString());
-            }
-        }
-        else {
-            System.out.println("No es posible mostrar la lista de cursos.");
-        }
-    }
-
-    private static void añadirActualizar(){
-        System.out.println("'si' para agregar el curso 3ºDAM y cambiar 2º por 4º");
-        if(sc.nextLine().equals("si")){
-            Curso curso = new Curso(3, "3ºdam");
-            int i = cursoDAOImpl.add(curso);
-            if (i>0){
-                System.out.println("se ha agregado el curso");
-            }
-            else if (i<0){
-                System.out.println("No se ha agregado el curso");
-            }
-
-            System.out.println("-------- a ver si podemos editar 2º----------");
-
-            curso = cursoDAOImpl.findById(Long.valueOf(2));
-            curso.setDescripcion("4ºdam");
-            cursoDAOImpl.update(curso);
-        }
     }
 
     private static void menu() {
@@ -132,7 +88,7 @@ public class GestionEscolar {
         if (buscarCurso(codigo) != null) {
             System.out.println("ERROR: Ya existe un curso con ese código.");
         } else {
-            cursos.add(new Curso(codigo, nombre));
+            cursoDAOImpl.add(new Curso(codigo, nombre));
             System.out.println("Curso dado de alta.");
         }
     }
@@ -158,7 +114,7 @@ public class GestionEscolar {
             }
             //  Como no tiene nada asociado procedemos al borrado
             else {
-                cursos.remove(c);
+                cursoDAOImpl.deleteById(Long.valueOf(codigo));
                 System.out.println("Curso borrado correctamente.");
             }
         }
@@ -168,7 +124,7 @@ public class GestionEscolar {
      * Buscar Curso
      */
     private static Curso buscarCurso(int codigo) {
-        // Creamos un objeto curso al que solo le pasamos el código
+        /*// Creamos un objeto curso al que solo le pasamos el código
         Curso c = new Curso();
         c.setCodigo(codigo);
         // Usamos contains para comprobar si existe el curso. Como hemos implementado la
@@ -179,6 +135,13 @@ public class GestionEscolar {
             return cursos.get(pos);
         } else {
             return null;
+        }*/
+        if (cursoDAOImpl.findById(Long.valueOf(codigo)) == null) {
+            System.out.println("El curso indicado no existe");
+            return null;
+        }
+        else {
+            return cursoDAOImpl.findById(Long.valueOf(Long.valueOf(codigo)));
         }
     }
 
@@ -861,8 +824,10 @@ public class GestionEscolar {
         System.out.println("============================================================");
         System.out.println("Listado de cursos.");
         System.out.println("============================================================");
-        for(int i=0;i<cursos.size();i++){
-            System.out.println(cursos.get(i).toString());
+
+        List<Curso> cursos = cursoDAOImpl.getAll();
+        for(Curso curso: cursos){
+            System.out.println(curso.toString());
         }
     }
 

@@ -1,10 +1,12 @@
 package org.example.modelo;
 
+import org.example.DAO.IOperationsCRUD;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Curso {
+public class Curso implements IOperationsCRUD<Curso> {
 
     // Atributos de la clase
     private int codigo;
@@ -77,5 +79,30 @@ public class Curso {
     @Override
     public String toString() {
         return this.getCodigo() + " - " + this.getDescripcion();
+    }
+
+    @Override
+    public List<Curso> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public Curso findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public int add(Curso object) {
+        return 0;
+    }
+
+    @Override
+    public int update(Curso object) {
+        return 0;
+    }
+
+    @Override
+    public int deleteById(Long id) {
+        return 0;
     }
 }

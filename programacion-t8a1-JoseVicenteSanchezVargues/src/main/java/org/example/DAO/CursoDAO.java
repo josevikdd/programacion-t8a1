@@ -3,10 +3,7 @@ package org.example.DAO;
 import org.example.modelo.Curso;
 import org.example.utils.ConexionBD;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,21 +41,72 @@ public class CursoDAO implements IOperationsCRUD<Curso>{
 
     @Override
     public Curso findById(Long id) {
-        return null;
+        String sql = "SELECT * FROM curso WHERE codigo = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            Curso curso = null;
+
+            while (rs.next()){
+                int codigo = rs.getInt("codigo");
+                String descripcion = rs.getString("descripcion");
+
+                curso = new Curso(codigo, descripcion);
+            }
+            rs.close();
+            ps.close();
+            return curso;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public int add(Curso object) {
-        return 0;
+        String sql = "INSERT INTO curso (codigo, descripcion) VALUES (?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, object.getCodigo());
+            ps.setString(2, object.getDescripcion());
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
     public int update(Curso object) {
-        return 0;
+        String sql = "UPDATE curso SET descripcion=? WHERE codigo=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, object.getDescripcion());
+            ps.setInt(2, object.getCodigo());
+            ps.close();
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
     public int deleteById(Long id) {
-        return 0;
+        String sql = "DELETE FROM curso WHERE codigo=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, Math.toIntExact(id));
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

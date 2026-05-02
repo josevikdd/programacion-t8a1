@@ -1,6 +1,7 @@
 package org.example.main;
 
 import org.example.DAO.CursoDAO;
+import org.example.DAO.FactoriaDAO;
 import org.example.modelo.*;
 import org.example.utils.ConexionBD;
 import org.example.utils.DatosEstaticos;
@@ -16,6 +17,8 @@ public class GestionEscolar {
     private static final Scanner sc = new Scanner(System.in);
     // Cargamos los datos
     private static final DatosEstaticos de = new DatosEstaticos();
+    //Creamos los objetos DAO
+    private static CursoDAO cursoDAO = FactoriaDAO.getCursoDAO();
 
     public static void main(String[] args) {
 
@@ -53,7 +56,6 @@ public class GestionEscolar {
     }
 
     private static void cargarCursos() {
-        CursoDAO cursoDAO = new CursoDAO();
         List<Curso> cursostest = cursoDAO.getAll();
 
         if ((cursostest != null) && (!cursostest.isEmpty())){

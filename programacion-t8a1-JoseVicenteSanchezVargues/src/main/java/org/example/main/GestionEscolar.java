@@ -1,5 +1,6 @@
 package org.example.main;
 
+import org.example.DAO.CursoDAO;
 import org.example.modelo.*;
 import org.example.utils.ConexionBD;
 import org.example.utils.DatosEstaticos;
@@ -18,16 +19,8 @@ public class GestionEscolar {
 
     public static void main(String[] args) {
 
-        try{
-            // Pedimos que nos devuelva directamente la instancia de la conexion
-            if (ConexionBD.getConnection()!=null){
-                System.out.println("Conexion establecida");
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            ConexionBD.closeConnection();
-        }
+        //Crear metodo para cargar cursos y comprobar que funciona.
+        cargarCursos();
 
         int opcion;
 
@@ -57,6 +50,25 @@ public class GestionEscolar {
             }
 
         } while (opcion != 0);
+    }
+
+    private static void cargarCursos() {
+        CursoDAO cursoDAO = new CursoDAO();
+        List<Curso> cursostest = cursoDAO.getAll();
+
+        if ((cursostest != null) && (!cursostest.isEmpty())){
+            System.out.println("********************");
+            System.out.println("*** LISTA DE CURSOS ****");
+            System.out.println("********************");
+
+            for (Curso curso : cursostest) {
+                System.out.println(curso.toString());
+            }
+        }
+        else {
+            System.out.println("No es posible mostrar la lista de cursos.");
+        }
+
     }
 
     private static void menu() {

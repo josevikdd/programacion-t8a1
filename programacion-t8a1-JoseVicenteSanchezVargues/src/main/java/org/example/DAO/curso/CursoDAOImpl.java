@@ -1,5 +1,6 @@
-package org.example.DAO;
+package org.example.DAO.curso;
 
+import org.example.DAO.IOperationsCRUD;
 import org.example.modelo.Curso;
 import org.example.utils.ConexionBD;
 
@@ -7,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursoDAO implements IOperationsCRUD<Curso>{
+public class CursoDAOImpl implements CursoDAO {
 
     private Connection conn = ConexionBD.getConnection();
 

@@ -1,9 +1,8 @@
 package org.example.main;
 
-import org.example.DAO.CursoDAO;
+import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.FactoriaDAO;
 import org.example.modelo.*;
-import org.example.utils.ConexionBD;
 import org.example.utils.DatosEstaticos;
 import org.example.utils.InputUtils;
 
@@ -18,7 +17,7 @@ public class GestionEscolar {
     // Cargamos los datos
     private static final DatosEstaticos de = new DatosEstaticos();
     //Creamos los objetos DAO
-    private static CursoDAO cursoDAO = FactoriaDAO.getCursoDAO();
+    private static CursoDAOImpl cursoDAOImpl = FactoriaDAO.getCursoDAO();
 
     public static void main(String[] args) {
 
@@ -58,7 +57,7 @@ public class GestionEscolar {
     }
 
     private static void cargarCursos() {
-        List<Curso> cursostest = cursoDAO.getAll();
+        List<Curso> cursostest = cursoDAOImpl.getAll();
 
         if ((cursostest != null) && (!cursostest.isEmpty())){
             System.out.println("********************");
@@ -78,7 +77,7 @@ public class GestionEscolar {
         System.out.println("'si' para agregar el curso 3ºDAM y cambiar 2º por 4º");
         if(sc.nextLine().equals("si")){
             Curso curso = new Curso(3, "3ºdam");
-            int i = cursoDAO.add(curso);
+            int i = cursoDAOImpl.add(curso);
             if (i>0){
                 System.out.println("se ha agregado el curso");
             }
@@ -88,9 +87,9 @@ public class GestionEscolar {
 
             System.out.println("-------- a ver si podemos editar 2º----------");
 
-            curso = cursoDAO.findById(Long.valueOf(2));
+            curso = cursoDAOImpl.findById(Long.valueOf(2));
             curso.setDescripcion("4ºdam");
-            cursoDAO.update(curso);
+            cursoDAOImpl.update(curso);
         }
     }
 

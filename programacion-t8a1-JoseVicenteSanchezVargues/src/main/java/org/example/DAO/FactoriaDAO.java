@@ -1,13 +1,15 @@
 package org.example.DAO;
 
+import org.example.DAO.curso.CursoDAOImpl;
+
 public class FactoriaDAO {
 
-    private static CursoDAO cursoDAO = null;
+    private static CursoDAOImpl cursoDAOImpl = null;
 
-    public static CursoDAO getCursoDAO() {
-        if (cursoDAO == null) {
-            cursoDAO = new CursoDAO();
+    public static CursoDAOImpl getCursoDAO() {
+        if (cursoDAOImpl == null) {
+            cursoDAOImpl = new CursoDAOImpl();
         }
-        return cursoDAO;
+        return cursoDAOImpl;
     }
 }

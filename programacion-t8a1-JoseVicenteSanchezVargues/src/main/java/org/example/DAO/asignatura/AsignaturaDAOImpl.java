@@ -30,7 +30,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
                 Asignatura asignatura = new Asignatura(codigo, nombre);
 
                 /*if (!Integer.toString(rs.getInt("c_profesor")).equals("")){ //aquigg necesito crear profesores?
-                    asignatura.impartir();
+                    asignatura.impartir(aqui DAO profesor llamar a profe);
                 }*/
 
                 if (!Integer.toString(rs.getInt("c_curso")).equals("")){
@@ -64,19 +64,9 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
 
             while (rs.next()){
                 int codigo = rs.getInt("codigo");
-                String descripcion = rs.getString("descripcion");
+                String descripcion = rs.getString("nombre");
 
                 asignatura = new Asignatura(codigo, descripcion);
-
-                /*if (!Integer.toString(rs.getInt("c_profesor")).equals("")){ //aquigg necesito crear profesores?
-                    asignatura.impartir();
-                }*/
-
-                if (!Integer.toString(rs.getInt("c_curso")).equals("")){
-                    Curso curso = null;
-                    curso = curso.findById(Long.valueOf(rs.getInt("c_curso")));
-                    asignatura.setCurso(curso);
-                }
             }
             rs.close();
             ps.close();
@@ -94,7 +84,12 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, object.getCodigo());
             ps.setString(2, object.getNombre());
-            ps.setInt(3, object.getProfesor().getCodigo());
+            if(object.getProfesor() != null){
+                ps.setInt(3, object.getProfesor().getCodigo());
+            }
+            else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
             ps.setInt(4, object.getCurso().getCodigo());
 
             int i = ps.executeUpdate();

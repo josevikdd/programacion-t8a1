@@ -1,5 +1,6 @@
 package org.example.main;
 
+import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.FactoriaDAO;
 import org.example.modelo.*;
@@ -16,6 +17,7 @@ public class GestionEscolar {
     private static final Scanner sc = new Scanner(System.in);
     //Creamos los objetos DAO
     private static CursoDAOImpl cursoDAOImpl = FactoriaDAO.getCursoDAO();
+    private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
 
     public static void main(String[] args) {
 
@@ -124,18 +126,6 @@ public class GestionEscolar {
      * Buscar Curso
      */
     private static Curso buscarCurso(int codigo) {
-        /*// Creamos un objeto curso al que solo le pasamos el código
-        Curso c = new Curso();
-        c.setCodigo(codigo);
-        // Usamos contains para comprobar si existe el curso. Como hemos implementado la
-        // comprobación por código solo necesitamos pasarle el código
-        if (cursos.contains(c)) {
-            // Obtenemos la posición donde se encuentra y devolvemos de la lista de cursos esa posicion
-            int pos = cursos.indexOf(c);
-            return cursos.get(pos);
-        } else {
-            return null;
-        }*/
         if (cursoDAOImpl.findById(Long.valueOf(codigo)) == null) {
             System.out.println("El curso indicado no existe");
             return null;
@@ -164,6 +154,8 @@ public class GestionEscolar {
             } else {
                 asignatura = new Asignatura(codigoAsig, nombre);
                 curso.asignarAsignatura(asignatura);
+                asignatura.setCurso(curso);
+                asignaturaDAOImpl.add(asignatura);
                 System.out.println("Asignatura dada de alta.");
             }
         }
@@ -181,34 +173,7 @@ public class GestionEscolar {
         // Localizamos la asignatura
         Asignatura asignatura = buscarAsignatura(codigo);
         if (asignatura != null) {
-            // PROCESO NO RECOMENDABLE: No usar esto ya que al ir borrando cambia el índice de la lista
-            /*
-            for(int i = 0; i < asignatura.getExamenes().size(); i++){
-                // Primero borramos al alumno el examen
-                Examen examen = asignatura.getExamenes().get(i);
-                Alumno alumno = examen.getAlumno();
-                int pos = alumno.getExamenes().indexOf(examen);
-                alumno.getExamenes().remove(pos);
-                // Tras quitarle al alumno el examen borramos el examen de la asignatura
-                asignatura.getExamenes().remove(i);
-            */
-
-            // PROCESO RECOMENDABLE: Utilizando un iterator, por un lado vamos a borrar los examenes
-            // del alumno y luego borrar todos los examenes de la asignatura
-            Iterator<Examen> it = asignatura.getExamenes().iterator();
-
-            while (it.hasNext()) {
-                Examen examen = it.next();
-                Alumno alumno = examen.getAlumno();
-                alumno.getExamenes().remove(examen);
-                // Borramos el examen de la asignatura
-                it.remove();
-            }
-
-            // Una vez borrados los examenes procedemos a borrar la asignatura del curso
-            // y con esto, al perderse la relación se pierde la asignatura
-            Curso curso = asignatura.getCurso();
-            curso.getAsignaturas().remove(asignatura);
+            asignaturaDAOImpl.deleteById(Long.valueOf(codigo));
             System.out.println("Asignatura eliminada.");
         } else {
             System.out.println("No existe la asignatura.");
@@ -221,7 +186,7 @@ public class GestionEscolar {
      * la asignatura en cada uno de ellos. Si la encuentra la devuelve
      */
     private static Asignatura buscarAsignatura(int codigo) {
-        // Creamos un objeto Asignatura al que le asignamos el id para poder realizar las busquedas
+        /*// Creamos un objeto Asignatura al que le asignamos el id para poder realizar las busquedas
         Asignatura asignatura = new Asignatura();
         asignatura.setCodigo(codigo);
         // Variable para parar el while cuando la encuentra
@@ -250,6 +215,13 @@ public class GestionEscolar {
             return asignatura;
         } else {
             return null;
+        }*/
+        if (asignaturaDAOImpl.findById(Long.valueOf(codigo)) == null) {
+            System.out.println("La asignatura indicada no existe");
+            return null;
+        }
+        else {
+            return asignaturaDAOImpl.findById(Long.valueOf(Long.valueOf(codigo)));
         }
     }
 

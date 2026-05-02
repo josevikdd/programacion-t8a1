@@ -1,6 +1,7 @@
 package org.example.main;
 
 import org.example.modelo.*;
+import org.example.utils.ConexionBD;
 import org.example.utils.DatosEstaticos;
 import org.example.utils.InputUtils;
 
@@ -16,6 +17,17 @@ public class GestionEscolar {
     private static final DatosEstaticos de = new DatosEstaticos();
 
     public static void main(String[] args) {
+
+        try{
+            // Pedimos que nos devuelva directamente la instancia de la conexion
+            if (ConexionBD.getConnection()!=null){
+                System.out.println("Conexion establecida");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            ConexionBD.closeConnection();
+        }
 
         int opcion;
 

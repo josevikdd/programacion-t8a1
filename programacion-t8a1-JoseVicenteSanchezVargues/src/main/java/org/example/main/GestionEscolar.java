@@ -24,6 +24,8 @@ public class GestionEscolar {
 
         //Crear metodo para cargar cursos y comprobar que funciona.
         cargarCursos();
+        //Metodo para probar añadir y actualizar
+        //añadirActualizar();
 
         int opcion;
 
@@ -70,7 +72,26 @@ public class GestionEscolar {
         else {
             System.out.println("No es posible mostrar la lista de cursos.");
         }
+    }
 
+    private static void añadirActualizar(){
+        System.out.println("'si' para agregar el curso 3ºDAM y cambiar 2º por 4º");
+        if(sc.nextLine().equals("si")){
+            Curso curso = new Curso(3, "3ºdam");
+            int i = cursoDAO.add(curso);
+            if (i>0){
+                System.out.println("se ha agregado el curso");
+            }
+            else if (i<0){
+                System.out.println("No se ha agregado el curso");
+            }
+
+            System.out.println("-------- a ver si podemos editar 2º----------");
+
+            curso = cursoDAO.findById(Long.valueOf(2));
+            curso.setDescripcion("4ºdam");
+            cursoDAO.update(curso);
+        }
     }
 
     private static void menu() {

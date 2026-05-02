@@ -46,6 +46,13 @@ public class Curso implements IOperationsCRUD<Curso> {
         return asignaturas;
     }
 
+    //aquigg para hacer pruebas
+
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public void asignarAsignatura(Asignatura asignatura){
         this.asignaturas.add(asignatura);
         asignatura.setCurso(this);

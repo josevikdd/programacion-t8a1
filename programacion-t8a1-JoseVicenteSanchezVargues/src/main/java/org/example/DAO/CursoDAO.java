@@ -87,8 +87,8 @@ public class CursoDAO implements IOperationsCRUD<Curso>{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, object.getDescripcion());
             ps.setInt(2, object.getCodigo());
-            ps.close();
             int i = ps.executeUpdate();
+            ps.close();
             return i;
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class CursoDAO implements IOperationsCRUD<Curso>{
         String sql = "DELETE FROM curso WHERE codigo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, Math.toIntExact(id));
+            ps.setLong(1, id);
             int i = ps.executeUpdate();
             return i;
         } catch (Exception e){

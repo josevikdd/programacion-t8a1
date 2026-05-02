@@ -16,8 +16,8 @@ public class DatosEstaticos {
         Obtenemos el objeto estático para poder trabajar con la lista de cursos
         y a partir de aquí ir creciendo la aplicación con datos. 
          */
-        
-        // Alta de cursos
+
+        /*// Alta de cursos
         Curso c1 = new Curso(1,"1º DAM");
         Curso c2 = new Curso(2,"2º DAM");
         GestionEscolar.getCursos().add(c1);
@@ -233,6 +233,6 @@ public class DatosEstaticos {
         a6.getExamenes().add(new Examen(27, al5,  a6, LocalDate.of(2025,9, 29), 7.1f));
         a6.getExamenes().add(new Examen(28, al8,  a6, LocalDate.of(2025,9,29), 6.9f));
         a6.getExamenes().add(new Examen(29, al11, a6, LocalDate.of(2025,11,27), 8.6f));
-        a6.getExamenes().add(new Examen(30, al14, a6, LocalDate.of(2025,11,27), 7.4f));
+        a6.getExamenes().add(new Examen(30, al14, a6, LocalDate.of(2025,11,27), 7.4f));*/
     }
 }

@@ -67,7 +67,7 @@ CREATE TABLE `asignaturas` (
 
 LOCK TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
-INSERT INTO `asignaturas` VALUES (111,'Programación',NULL,1),(112,'Bases de datos',NULL,1);
+INSERT INTO `asignaturas` VALUES (111,'Programación',1,1),(112,'Bases de datos',NULL,1);
 /*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,10 @@ CREATE TABLE `profesores` (
   `f_nacimiento` date DEFAULT NULL,
   `telefono` varchar(100) DEFAULT NULL,
   `categoria` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`codigo`)
+  `c_curso` int DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_profesores_curso` (`c_curso`),
+  CONSTRAINT `fk_profesores_curso` FOREIGN KEY (`c_curso`) REFERENCES `cursos` (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -150,6 +153,7 @@ CREATE TABLE `profesores` (
 
 LOCK TABLES `profesores` WRITE;
 /*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
+INSERT INTO `profesores` VALUES (1,'Laura','García López','Valencia','1980-05-12','600123456','Titular',1),(2,'Carlos','Martínez Ruiz','Madrid','1975-11-03','611234567','Catedrático',1),(3,'Ana','Sánchez Pérez','Sevilla','1988-02-20','622345678','Interina',1),(4,'Javier','Fernández Gómez','Alicante','1990-07-15','633456789','Asociado',1),(5,'Marta','López Navarro','Barcelona','1983-09-28','644567890','Titular',1),(6,'David','Romero Díaz','Granada','1979-12-10','655678901','Catedrático',1),(7,'Elena','Torres Martín','Zaragoza','1992-04-05','666789012','Interina',1),(8,'Pedro','Vega Castillo','Bilbao','1985-06-18','677890123','Asociado',1);
 /*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -162,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-02 19:57:24
+-- Dump completed on 2026-05-02 22:43:26

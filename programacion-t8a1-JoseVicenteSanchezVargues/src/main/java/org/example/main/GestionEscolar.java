@@ -3,8 +3,9 @@ package org.example.main;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.FactoriaDAO;
+import org.example.DAO.profesor.ProfesorDAOImpl;
 import org.example.modelo.*;
-import org.example.utils.DatosEstaticos;
+//import org.example.utils.DatosEstaticos;
 import org.example.utils.InputUtils;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class GestionEscolar {
     //Creamos los objetos DAO
     private static CursoDAOImpl cursoDAOImpl = FactoriaDAO.getCursoDAO();
     private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
+    private static ProfesorDAOImpl  profesorDAOImpl = FactoriaDAO.getProfesorDAO();
 
     public static void main(String[] args) {
 
@@ -243,19 +245,19 @@ public class GestionEscolar {
 
     /** Buscar un profesor por código en una lista de personas en concreto
      */
-    private static Profesor buscarProfesor(int codigo, List<Persona> lista) {
+    private static Profesor buscarProfesor(int codigo, List<Profesor> profesores) {
         int i = 0;
         boolean encontrado = false;
 
-        while (i < lista.size() && !encontrado) {
-            if ((lista.get(i) instanceof Profesor)&&(lista.get(i).getCodigo()==codigo)) {
+        while (i < profesores.size() && !encontrado) {
+            if ((profesores.get(i) instanceof Profesor)&&(profesores.get(i).getCodigo()==codigo)) {
                 encontrado = true;
             }else {
                 i++;
             }
         }
         if (encontrado==true){
-            return (Profesor) lista.get(i);
+            return profesores.get(i);
         }else{
             return null;
         }
@@ -269,17 +271,15 @@ public class GestionEscolar {
         System.out.println("=========================================");
         System.out.println("Lista de profesores del curso.");
         System.out.println("=========================================");
-        for (int i = 0; i < curso.getPersonas().size(); i++) {
-            if (curso.getPersonas().get(i) instanceof Profesor) {
-                Profesor p = (Profesor) curso.getPersonas().get(i);
-                p.mostrarDatos();
-            }
+        List<Profesor> profesores = profesorDAOImpl.getAllByCurso(curso);
+        for (Profesor profesor : profesores) {
+            profesor.mostrarDatos();
         }
         Profesor profesor = null;
         // Vamos pidiendo un profesor hasta tenerlo
         while (profesor == null) {
             int codigoProfesor = InputUtils.readInt(sc, "Seleccione un código de profesor de los mostrados: ");
-            profesor = buscarProfesor(codigoProfesor, curso.getPersonas());
+            profesor = buscarProfesor(codigoProfesor, profesores);
             if (profesor == null) {
                 System.out.println("Error: Profesor no encontrado.");
             }
@@ -418,24 +418,24 @@ public class GestionEscolar {
     /**
      * Permite seleccionar una asignatura de un curso, controlando si es libre o ocupada
      */
-    private static Asignatura seleccionarAsignaturaCurso(Curso curso, boolean libre) {
+    private static Asignatura seleccionarAsignaturaCurso(Curso curso, boolean libre, List<Asignatura> asignaturas) {
         // Mostramos la lista de asignaturas libres
         System.out.println("======================================================================================");
         System.out.println("Lista de asignaturas libres del curso " + curso.getCodigo() + " - " + curso.getDescripcion());
         System.out.println("======================================================================================");
         // Mostramos las asignaturas libres de profesor
         if (libre) {
-            for (int i = 0; i < curso.getAsignaturas().size(); i++) {
-                if (curso.getAsignaturas().get(i).getProfesor() == null) {
-                    Asignatura a = curso.getAsignaturas().get(i);
+            for (int i = 0; i < asignaturas.size(); i++) {
+                if (asignaturas.get(i).getProfesor() == null) {
+                    Asignatura a = asignaturas.get(i);
                     a.mostrarDatos();
                 }
             }
         } else {
             // Mostramos la lista de asignaturas asignadas a un profesor
-            for (int i = 0; i < curso.getAsignaturas().size(); i++) {
-                if (curso.getAsignaturas().get(i).getProfesor() != null) {
-                    Asignatura a = curso.getAsignaturas().get(i);
+            for (int i = 0; i < asignaturas.size(); i++) {
+                if (asignaturas.get(i).getProfesor() != null) {
+                    Asignatura a = asignaturas.get(i);
                     a.mostrarDatos();
                 }
             }
@@ -446,7 +446,7 @@ public class GestionEscolar {
             int codigoAsignatura = InputUtils.readInt(sc, "Seleccione un código de asignatura de los mostrados: ");
             asignatura = new Asignatura();
             asignatura.setCodigo(codigoAsignatura);
-            asignatura = curso.getAsignaturas().get(curso.getAsignaturas().indexOf(asignatura));
+            asignatura = asignaturas.get(asignaturas.indexOf(asignatura));
             if (asignatura != null) {
                 System.out.println("Error: Asignatura no encontrada.");
             }
@@ -644,7 +644,7 @@ public class GestionEscolar {
             System.out.println("Curso no encontrado.");
         } else {
             // Comprobamos si existe algún profesor
-            if (existeProfesor(curso.getPersonas())==false) {
+            if (profesorDAOImpl.getAllByCurso(curso).isEmpty()) {
                 System.out.println("No hay profesores asociados al curso.");
                 return;
             } else {
@@ -656,16 +656,30 @@ public class GestionEscolar {
                         profesor = null;
                     }
                 }
+                /*if (profesor != null){
+                    List<Asignatura> asignaturas = asignaturaDAOImpl.getAllByCurso(curso);
+                    if(!asignaturas.isEmpty()) {
+                        System.out.println("============================================================");
+                        System.out.println("Listado de asignaturas del curso " + curso.getDescripcion());
+                        System.out.println("============================================================");
+                        for(Asignatura asignatura: asignaturas){
+                            asignatura.mostrarDatos();
+                        }
+                        Asignatura asignatura = null;
+                        int codigoAsignatura = InputUtils.readInt(sc, "Introduzca el código del asignatura que quiere " +
+                                "asignar al profesor seleccionado: ");
+                        }
+                }*/
             }
         }
 
         // Como tenemos curso y profesor seleccionamos la lista de asignaturas que no tiene profesor del curso
         if ((curso != null) && (profesor != null)) {
-            if (existenAsignaturas(curso.getAsignaturas(), true)) {
+            if (existenAsignaturas(asignaturaDAOImpl.getAllByCurso(curso), true)) {
                 // Seleccionamos la asignatura
-                Asignatura asignatura = seleccionarAsignaturaCurso(curso, true);
+                Asignatura asignatura = seleccionarAsignaturaCurso(curso, true, asignaturaDAOImpl.getAllByCurso(curso));
                 // Asignamos a la asignatura el profesor y viceversa
-                asignatura.impartir(profesor);
+                asignatura.impartir(profesor, curso);
                 System.out.println("Profesor asignado a la asignatura correctamente.");
             } else {
                 System.out.println("No hay asignaturas libres en este curso.");

@@ -811,13 +811,15 @@ public class GestionEscolar {
         if (curso == null) {
             System.out.println("Curso no encontrado.");
         } else {
-            if(curso.getAsignaturas().size()>0) {
+            List<Asignatura> asignaturas = asignaturaDAOImpl.getAllByCurso(curso);
+            if(!asignaturas.isEmpty()) {
                 System.out.println("============================================================");
                 System.out.println("Listado de asignaturas del curso " + curso.getDescripcion());
                 System.out.println("============================================================");
-                for (int i = 0; i < curso.getAsignaturas().size(); i++) {
-                    curso.getAsignaturas().get(i).mostrarDatos();
+                for(Asignatura asignatura: asignaturas){
+                    asignatura.mostrarDatos();
                 }
+
             }else{
                 System.out.println("El curso no tiene asignaturas.");
             }

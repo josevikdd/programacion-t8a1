@@ -28,7 +28,6 @@ public class CursoDAOImpl implements CursoDAO {
                 Curso curso = new Curso(codigo, nombre);
                 cursos.add(curso);
             }
-
             rs.close();
             st.close();
 

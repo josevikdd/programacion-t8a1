@@ -1,12 +1,13 @@
 package org.example.modelo;
 
 import org.example.DAO.IOperationsCRUD;
+import org.example.DAO.curso.CursoDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Curso implements IOperationsCRUD<Curso> {
+public class Curso implements CursoDAO {
 
     // Atributos de la clase
     private int codigo;

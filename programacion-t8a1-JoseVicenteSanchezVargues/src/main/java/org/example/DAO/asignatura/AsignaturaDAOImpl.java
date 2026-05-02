@@ -15,44 +15,6 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
     private Connection conn = ConexionBD.getConnection();
 
     @Override
-    public List<Asignatura> getAll() {
-        List<Asignatura> asignaturas = new ArrayList<Asignatura>();
-
-        try {
-            Statement st = conn.createStatement();
-            String sql = "SELECT * FROM asignatura";
-            ResultSet rs = st.executeQuery(sql);
-
-            while (rs.next()){
-                int codigo = rs.getInt("codigo");
-                String nombre = rs.getString("nombre");
-
-                Asignatura asignatura = new Asignatura(codigo, nombre);
-
-                /*if (!Integer.toString(rs.getInt("c_profesor")).equals("")){ //aquigg necesito crear profesores?
-                    asignatura.impartir(aqui DAO profesor llamar a profe);
-                }*/
-
-                if (!Integer.toString(rs.getInt("c_curso")).equals("")){
-                    Curso curso = null;
-                    curso = curso.findById(Long.valueOf(rs.getInt("c_curso")));
-                    asignatura.setCurso(curso);
-                }
-
-                asignaturas.add(asignatura);
-            }
-
-            rs.close();
-            st.close();
-            return asignaturas;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
     public Asignatura findById(Long id) {
         String sql = "SELECT * FROM asignatura WHERE codigo = ?";
         try {
@@ -130,6 +92,33 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
         } catch (Exception e){
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    @Override
+    public List<Asignatura> getAllByCurso(Curso curso) {
+        List<Asignatura> asignaturas = new ArrayList<Asignatura>();
+
+        try {
+            String sql = "SELECT * FROM asignatura WHERE c_curso=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, curso.getCodigo());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+
+                Asignatura asignatura = new Asignatura(codigo, nombre);
+                asignaturas.add(asignatura);
+            }
+            rs.close();
+            ps.close();
+            return asignaturas;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

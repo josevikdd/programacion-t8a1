@@ -16,36 +16,39 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `alumno`
+-- Table structure for table `alumnos`
 --
 
-DROP TABLE IF EXISTS `alumno`;
+DROP TABLE IF EXISTS `alumnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alumno` (
+CREATE TABLE `alumnos` (
   `codigo` int NOT NULL,
-  PRIMARY KEY (`codigo`),
-  CONSTRAINT `alumno_ibfk_1` FOREIGN KEY (`codigo`) REFERENCES `persona` (`codigo`)
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellidos` varchar(100) DEFAULT NULL,
+  `poblacion` varchar(100) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `alumno`
+-- Dumping data for table `alumnos`
 --
 
-LOCK TABLES `alumno` WRITE;
-/*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
+LOCK TABLES `alumnos` WRITE;
+/*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `asignatura`
+-- Table structure for table `asignaturas`
 --
 
-DROP TABLE IF EXISTS `asignatura`;
+DROP TABLE IF EXISTS `asignaturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asignatura` (
+CREATE TABLE `asignaturas` (
   `codigo` int NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `c_profesor` int DEFAULT NULL,
@@ -53,28 +56,29 @@ CREATE TABLE `asignatura` (
   PRIMARY KEY (`codigo`),
   KEY `c_profesor` (`c_profesor`),
   KEY `c_curso` (`c_curso`),
-  CONSTRAINT `asignatura_ibfk_1` FOREIGN KEY (`c_profesor`) REFERENCES `profesor` (`codigo`),
-  CONSTRAINT `asignatura_ibfk_2` FOREIGN KEY (`c_curso`) REFERENCES `curso` (`codigo`)
+  CONSTRAINT `asignaturas_ibfk_1` FOREIGN KEY (`c_profesor`) REFERENCES `profesores` (`codigo`),
+  CONSTRAINT `asignaturas_ibfk_2` FOREIGN KEY (`c_curso`) REFERENCES `cursos` (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asignatura`
+-- Dumping data for table `asignaturas`
 --
 
-LOCK TABLES `asignatura` WRITE;
-/*!40000 ALTER TABLE `asignatura` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignatura` ENABLE KEYS */;
+LOCK TABLES `asignaturas` WRITE;
+/*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
+INSERT INTO `asignaturas` VALUES (111,'Programación',NULL,1),(112,'Bases de datos',NULL,1);
+/*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `curso`
+-- Table structure for table `cursos`
 --
 
-DROP TABLE IF EXISTS `curso`;
+DROP TABLE IF EXISTS `cursos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `curso` (
+CREATE TABLE `cursos` (
   `codigo` int NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`codigo`)
@@ -82,23 +86,23 @@ CREATE TABLE `curso` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `curso`
+-- Dumping data for table `cursos`
 --
 
-LOCK TABLES `curso` WRITE;
-/*!40000 ALTER TABLE `curso` DISABLE KEYS */;
-INSERT INTO `curso` VALUES (1,'1ºdam'),(2,'2ºdam');
-/*!40000 ALTER TABLE `curso` ENABLE KEYS */;
+LOCK TABLES `cursos` WRITE;
+/*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
+INSERT INTO `cursos` VALUES (1,'1 º DAM'),(2,'2 º DAM');
+/*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `examen`
+-- Table structure for table `examenes`
 --
 
-DROP TABLE IF EXISTS `examen`;
+DROP TABLE IF EXISTS `examenes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `examen` (
+CREATE TABLE `examenes` (
   `codigo` int NOT NULL,
   `fecha` date DEFAULT NULL,
   `nota` float DEFAULT NULL,
@@ -107,72 +111,46 @@ CREATE TABLE `examen` (
   PRIMARY KEY (`codigo`),
   KEY `c_alumno` (`c_alumno`),
   KEY `c_asignatura` (`c_asignatura`),
-  CONSTRAINT `examen_ibfk_1` FOREIGN KEY (`c_alumno`) REFERENCES `alumno` (`codigo`),
-  CONSTRAINT `examen_ibfk_2` FOREIGN KEY (`c_asignatura`) REFERENCES `asignatura` (`codigo`)
+  CONSTRAINT `examenes_ibfk_1` FOREIGN KEY (`c_alumno`) REFERENCES `alumnos` (`codigo`),
+  CONSTRAINT `examenes_ibfk_2` FOREIGN KEY (`c_asignatura`) REFERENCES `asignaturas` (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `examen`
+-- Dumping data for table `examenes`
 --
 
-LOCK TABLES `examen` WRITE;
-/*!40000 ALTER TABLE `examen` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examen` ENABLE KEYS */;
+LOCK TABLES `examenes` WRITE;
+/*!40000 ALTER TABLE `examenes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `examenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `persona`
+-- Table structure for table `profesores`
 --
 
-DROP TABLE IF EXISTS `persona`;
+DROP TABLE IF EXISTS `profesores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `persona` (
+CREATE TABLE `profesores` (
   `codigo` int NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `apellidos` varchar(100) DEFAULT NULL,
   `poblacion` varchar(100) DEFAULT NULL,
-  `fecha_nacimiento` date DEFAULT NULL,
-  `c_curso` int DEFAULT NULL,
-  PRIMARY KEY (`codigo`),
-  KEY `c_curso` (`c_curso`),
-  CONSTRAINT `persona_ibfk_1` FOREIGN KEY (`c_curso`) REFERENCES `curso` (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `persona`
---
-
-LOCK TABLES `persona` WRITE;
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `profesor`
---
-
-DROP TABLE IF EXISTS `profesor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `profesor` (
-  `codigo` int NOT NULL,
+  `f_nacimiento` date DEFAULT NULL,
   `telefono` varchar(100) DEFAULT NULL,
   `categoria` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`codigo`),
-  CONSTRAINT `profesor_ibfk_1` FOREIGN KEY (`codigo`) REFERENCES `persona` (`codigo`)
+  PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `profesor`
+-- Dumping data for table `profesores`
 --
 
-LOCK TABLES `profesor` WRITE;
-/*!40000 ALTER TABLE `profesor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `profesor` ENABLE KEYS */;
+LOCK TABLES `profesores` WRITE;
+/*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -184,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-02 13:05:15
+-- Dump completed on 2026-05-02 19:57:24

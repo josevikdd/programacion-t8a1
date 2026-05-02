@@ -18,7 +18,7 @@ public class CursoDAOImpl implements CursoDAO {
 
         try {
             Statement st = conn.createStatement();
-            String sql = "SELECT * FROM curso";
+            String sql = "SELECT * FROM cursos";
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()){
@@ -41,7 +41,7 @@ public class CursoDAOImpl implements CursoDAO {
 
     @Override
     public Curso findById(Long id) {
-        String sql = "SELECT * FROM curso WHERE codigo = ?";
+        String sql = "SELECT * FROM cursos WHERE codigo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, id);
@@ -66,7 +66,7 @@ public class CursoDAOImpl implements CursoDAO {
 
     @Override
     public int add(Curso object) {
-        String sql = "INSERT INTO curso (codigo, descripcion) VALUES (?, ?)";
+        String sql = "INSERT INTO cursos (codigo, descripcion) VALUES (?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, object.getCodigo());
@@ -82,7 +82,7 @@ public class CursoDAOImpl implements CursoDAO {
 
     @Override
     public int update(Curso object) {
-        String sql = "UPDATE curso SET descripcion=? WHERE codigo=?";
+        String sql = "UPDATE cursos SET descripcion=? WHERE codigo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, object.getDescripcion());
@@ -98,7 +98,7 @@ public class CursoDAOImpl implements CursoDAO {
 
     @Override
     public int deleteById(Long id) {
-        String sql = "DELETE FROM curso WHERE codigo=?";
+        String sql = "DELETE FROM cursos WHERE codigo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, id);

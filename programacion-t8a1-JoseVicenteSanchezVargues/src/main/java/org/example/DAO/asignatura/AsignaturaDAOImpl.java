@@ -16,7 +16,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
 
     @Override
     public Asignatura findById(Long id) {
-        String sql = "SELECT * FROM asignatura WHERE codigo = ?";
+        String sql = "SELECT * FROM asignaturas WHERE codigo = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, id);
@@ -41,7 +41,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
 
     @Override
     public int add(Asignatura object) {
-        String sql = "INSERT INTO asignatura (codigo, nombre, c_profesor, c_curso) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO asignaturas (codigo, nombre, c_profesor, c_curso) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, object.getCodigo());
@@ -65,7 +65,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
 
     @Override
     public int update(Asignatura object) {
-        String sql = "UPDATE curso SET nombre=?, c_profesor=?, c_curso=? WHERE codigo=?";
+        String sql = "UPDATE asignaturas SET nombre=?, c_profesor=?, c_curso=? WHERE codigo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, object.getNombre());
@@ -83,7 +83,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
 
     @Override
     public int deleteById(Long id) {
-        String sql = "DELETE FROM asignatura WHERE codigo=?";
+        String sql = "DELETE FROM asignaturas WHERE codigo=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, id);
@@ -100,7 +100,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
         List<Asignatura> asignaturas = new ArrayList<Asignatura>();
 
         try {
-            String sql = "SELECT * FROM asignatura WHERE c_curso=?";
+            String sql = "SELECT * FROM asignaturas WHERE c_curso=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, curso.getCodigo());
             ResultSet rs = ps.executeQuery();

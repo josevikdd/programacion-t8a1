@@ -1,7 +1,11 @@
 package org.example.DAO.asignatura;
 
+import org.example.DAO.FactoriaDAO;
+import org.example.DAO.profesor.ProfesorDAOImpl;
+import org.example.main.GestionEscolar;
 import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
+import org.example.modelo.Profesor;
 import org.example.utils.ConexionBD;
 
 import java.sql.Connection;
@@ -13,6 +17,7 @@ import java.util.List;
 
 public class AsignaturaDAOImpl implements AsignaturaDAO{
     private Connection conn = ConexionBD.getConnection();
+    private static ProfesorDAOImpl  profesorDAOImpl = FactoriaDAO.getProfesorDAO();
 
     @Override
     public Asignatura findById(Long id) {
@@ -103,6 +108,38 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             String sql = "SELECT * FROM asignaturas WHERE c_curso=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, curso.getCodigo());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+
+                Asignatura asignatura = new Asignatura(codigo, nombre);
+
+                int cProfesor = rs.getInt("c_profesor");
+                if (!rs.wasNull()) {
+                    asignatura.impartir(profesorDAOImpl.findById(Long.valueOf(cProfesor)), curso);
+                }
+                asignaturas.add(asignatura);
+            }
+            rs.close();
+            ps.close();
+            return asignaturas;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Asignatura> getAllByProfe(Profesor profesor) {
+        List<Asignatura> asignaturas = new ArrayList<Asignatura>();
+
+        try {
+            String sql = "SELECT * FROM asignaturas WHERE c_profesor=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, profesor.getCodigo());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

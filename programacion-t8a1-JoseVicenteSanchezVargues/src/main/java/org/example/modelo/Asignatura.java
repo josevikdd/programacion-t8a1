@@ -52,7 +52,7 @@ public class Asignatura implements Mostrable{
     public List<Examen> getExamenes() { return examenes; }
 
     public void impartir(Profesor profesor, Curso curso){
-        if(profesor.getAsignaturas().size()>2){
+        if(asignaturaDAOImpl.getAllByProfe(profesor).size()>2){
             System.out.println("Error. El profesor tiene ya 2 o más asignaturas asignadas.");
         }else{
             // Creamos la relación entre profesor y asignatura

@@ -651,25 +651,11 @@ public class GestionEscolar {
                 // Seleccionamos un profesor que tenga menos de 2 asignaturas asignadas
                 while (profesor == null) {
                     profesor = seleccionarProfesor(curso);
-                    if (profesor.getAsignaturas().size() >= 2) {
+                    if (asignaturaDAOImpl.getAllByProfe(profesor).size() >= 2) {
                         System.out.println("No puede seleccionar el profesor ya que tiene 2 o más asignaturas asignadas.");
                         profesor = null;
                     }
                 }
-                /*if (profesor != null){
-                    List<Asignatura> asignaturas = asignaturaDAOImpl.getAllByCurso(curso);
-                    if(!asignaturas.isEmpty()) {
-                        System.out.println("============================================================");
-                        System.out.println("Listado de asignaturas del curso " + curso.getDescripcion());
-                        System.out.println("============================================================");
-                        for(Asignatura asignatura: asignaturas){
-                            asignatura.mostrarDatos();
-                        }
-                        Asignatura asignatura = null;
-                        int codigoAsignatura = InputUtils.readInt(sc, "Introduzca el código del asignatura que quiere " +
-                                "asignar al profesor seleccionado: ");
-                        }
-                }*/
             }
         }
 

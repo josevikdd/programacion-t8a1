@@ -18,7 +18,34 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
     @Override
     public Profesor findById(Long id) {
-        return null;
+        String sql = "SELECT * FROM profesores WHERE codigo = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            Profesor profesor = null;
+
+            if (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String poblacion = rs.getString("poblacion");
+                LocalDate fNacimiento = LocalDate.parse(rs.getString("f_nacimiento"));
+                String telefono = rs.getString("telefono");
+                String categoria = rs.getString("categoria");
+
+                profesor = new Profesor(codigo, nombre, apellidos, poblacion, fNacimiento, telefono, categoria);
+            }
+
+            rs.close();
+            ps.close();
+            return profesor;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

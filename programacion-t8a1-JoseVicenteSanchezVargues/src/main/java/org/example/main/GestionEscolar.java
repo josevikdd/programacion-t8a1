@@ -228,8 +228,7 @@ public class GestionEscolar {
     }
 
     /** Comprobar si existe un profesor en la lista de personas
-     */
-    private static boolean existeProfesor(List<Persona> lista) {
+    private static boolean existeProfesor(List<Profesor> lista) {
         int i = 0;
         boolean encontrado = false;
 
@@ -241,7 +240,7 @@ public class GestionEscolar {
         }
 
         return encontrado;
-    }
+    }*/
 
     /** Buscar un profesor por código en una lista de personas en concreto
      */
@@ -495,7 +494,7 @@ public class GestionEscolar {
         Alumno alumno = null;
         if (curso != null) {
             // Comprobamos si existe algún profesor
-            if (existeProfesor(curso.getPersonas())==false) {
+            if (profesorDAOImpl.getAllByCurso(curso).isEmpty()) {
                 // Si no hay profesores se informa y se sale
                 System.out.println("No hay profesores asociados al curso.");
                 return;
@@ -836,16 +835,14 @@ public class GestionEscolar {
             System.out.println("Curso no encontrado.");
         } else {
             // Comprobamos que tiene profesores
-            if(existeProfesor(curso.getPersonas())) {
+            if(!profesorDAOImpl.getAllByCurso(curso).isEmpty()) {
                 // Mostramos la lista de profesores
+                List <Profesor> profesores = profesorDAOImpl.getAllByCurso(curso);
                 System.out.println("============================================================");
                 System.out.println("Lista de profesores del curso.");
                 System.out.println("============================================================");
-                for (int i = 0; i < curso.getPersonas().size(); i++) {
-                    if (curso.getPersonas().get(i) instanceof Profesor) {
-                        Profesor p = (Profesor) curso.getPersonas().get(i);
-                        p.mostrarDatos();
-                    }
+                for (Profesor profesor: profesores){
+                    profesor.mostrarDatos();
                 }
             }else{
                 System.out.println("El curso no tiene profesores asociados.");
@@ -888,7 +885,7 @@ public class GestionEscolar {
             System.out.println("Curso no encontrado.");
         } else {
             // Comprobamos si existe algún profesor
-            if (existeProfesor(curso.getPersonas())) {
+            if (!profesorDAOImpl.getAllByCurso(curso).isEmpty()) {
                 // Seleccionamos un profesor que tenga menos de 2 asignaturas asignadas
                 profesor = seleccionarProfesor(curso);
                 // Recorremos las asignaturas

@@ -463,8 +463,8 @@ public class GestionEscolar {
         System.out.println("Lista de asignaturas del profesor " + profesor.getNombre() + " " + profesor.getApellidos());
         System.out.println("======================================================================================");
         // Mostramos las asignaturas libres de profesor
-        for (int i = 0; i < profesor.getAsignaturas().size(); i++) {
-            Asignatura a = profesor.getAsignaturas().get(i);
+        for (int i = 0; i < asignaturaDAOImpl.getAllByProfe(profesor).size(); i++) {
+            Asignatura a = asignaturaDAOImpl.getAllByProfe(profesor).get(i);
             a.mostrarDatos();
         }
         Asignatura asignatura = null;
@@ -472,8 +472,9 @@ public class GestionEscolar {
         while (asignatura == null) {
             int codigoAsignatura = InputUtils.readInt(sc, "Seleccione un código de asignatura de los mostrados: ");
             asignatura = new Asignatura();
-            asignatura.setCodigo(codigoAsignatura);
-            asignatura = profesor.getAsignaturas().get(profesor.getAsignaturas().indexOf(asignatura));
+            //asignatura.setCodigo(codigoAsignatura);
+            //asignatura = profesor.getAsignaturas().get(profesor.getAsignaturas().indexOf(asignatura));
+            asignatura = asignaturaDAOImpl.findById(Long.valueOf(codigoAsignatura));
             if (asignatura == null) {
                 System.out.println("Error: Asignatura no encontrada.");
             }
@@ -686,14 +687,14 @@ public class GestionEscolar {
             System.out.println("Curso no encontrado.");
         } else {
             // Comprobamos si existe algún profesor
-            if (existeProfesor(curso.getPersonas())==false) {
+            if (profesorDAOImpl.getAllByCurso(curso).isEmpty()) {
                 System.out.println("No hay profesores asociados al curso.");
                 return;
             } else {
                 // Seleccionamos un profesor que tenga asignaturas asignadas
                 while (profesor == null) {
                     profesor = seleccionarProfesor(curso);
-                    if (profesor.getAsignaturas().size() < 0) {
+                    if (asignaturaDAOImpl.getAllByProfe(profesor).size() < 0) {
                         System.out.println("No puede seleccionar el profesor ya que no tiene asignaturas asignadas.");
                         profesor = null;
                     }
@@ -705,7 +706,7 @@ public class GestionEscolar {
             // Seleccionamos la asignatura
             Asignatura asignatura = seleccionarAsignaturaProfesor(profesor);
             // Desasignamos la asignatura del profesor y viceversa
-            asignatura.dejarDeImpartir(profesor);
+            asignatura.dejarDeImpartir(profesor, curso);
             System.out.println("Profesor desasignado a la asignatura correctamente.");
         }
     }

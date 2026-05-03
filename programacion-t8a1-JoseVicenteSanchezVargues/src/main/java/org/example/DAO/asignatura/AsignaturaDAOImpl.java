@@ -74,7 +74,12 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, object.getNombre());
-            ps.setInt(2, object.getProfesor().getCodigo());
+            if (object.getProfesor() != null) {
+                ps.setInt(2, object.getProfesor().getCodigo());
+            }
+            else {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            }
             ps.setInt(3, object.getCurso().getCodigo());
             ps.setInt(4, object.getCodigo());
             int i = ps.executeUpdate();

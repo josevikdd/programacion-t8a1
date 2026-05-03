@@ -73,9 +73,10 @@ public class Asignatura implements Mostrable{
         }
     }
 
-    public void dejarDeImpartir(Profesor profesor) {
-        profesor.getAsignaturas().remove(this);
+    public void dejarDeImpartir(Profesor profesor, Curso curso) {
         this.profesor=null;
+        this.curso=curso;
+        asignaturaDAOImpl.update(this);
     }
 
     @Override

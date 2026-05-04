@@ -1,6 +1,7 @@
 package org.example.DAO.alumno;
 
 import org.example.modelo.Alumno;
+import org.example.modelo.Curso;
 import org.example.modelo.Profesor;
 import org.example.utils.ConexionBD;
 
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlumnoDAOImpl implements AlumnoDAO {
 
@@ -90,5 +93,35 @@ public class AlumnoDAOImpl implements AlumnoDAO {
     @Override
     public int deleteById(Long id) {
         return 0;
+    }
+
+    @Override
+    public List<Alumno> getAllByCurso(Curso curso) {
+        List<Alumno> alumnos = new ArrayList<Alumno>();
+
+        try {
+            String sql = "SELECT * FROM alumnos WHERE c_curso=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, curso.getCodigo());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String poblacion = rs.getString("poblacion");
+                LocalDate fNacimiento = LocalDate.parse(rs.getString("f_nacimiento"));
+
+                Alumno alumno = new Alumno(codigo, nombre, apellidos, poblacion, fNacimiento);
+                alumnos.add(alumno);
+            }
+            rs.close();
+            ps.close();
+            return alumnos;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

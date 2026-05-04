@@ -307,10 +307,10 @@ public class GestionEscolar {
     /**
      * Buscar alumno en todos los cursos
      */
-    private static Alumno buscarAlumno(int codigo) {
+    /*private static Alumno buscarAlumno(int codigo) {
         // Creamos una variable alumno para buscarla en los cursos
         return null;
-    }
+    }*/
 
     /**
      * Buscar alumno en una lista en concreto
@@ -739,14 +739,15 @@ public class GestionEscolar {
             System.out.println("Curso no encontrado.");
         } else {
             int codigo = InputUtils.readInt(sc, "Introduzca el código del alumno: ");
-            alumno = buscarAlumno(codigo);
+            alumno = alumnoDAOImpl.findById(Long.valueOf(codigo));
             // Comprobamos si el alumno está en el curso adecuado, sino sale del proceso
-            if (alumno.getCurso() != curso) {
+            int cursoActual = cursoDAOImpl.findByAlumno(Long.valueOf(codigo));
+            if (cursoActual != curso.getCodigo()) {
                 System.out.println("El alumno existe en otro curso distinto.");
             } else {
                 // Eliminamos los examenes de las asignatura.
                 // Para ello usamos un iterator para poder borrar sin problemas
-                Iterator<Examen> it = alumno.getExamenes().iterator();
+                /*Iterator<Examen> it = alumno.getExamenes().iterator();
 
                 while (it.hasNext()) {
                     Examen examen = it.next();
@@ -755,7 +756,7 @@ public class GestionEscolar {
                     asignatura.getExamenes().remove(examen);
                     asignatura.getAlumnos().remove(alumno);
                     it.remove();
-                }
+                }*/
 
                 // Eliminamos al alumno de las asignaturas
                 for(int i=0;i<curso.getAsignaturas().size();i++){
@@ -836,14 +837,13 @@ public class GestionEscolar {
         if (curso == null) {
             System.out.println("Curso no encontrado.");
         } else {
-            if(existeAlumno(curso.getPersonas())&&(curso.getPersonas().size()>0)){
+            if(alumnoDAOImpl.getAllByCurso(curso).size()>0){
                 System.out.println("============================================================");
                 System.out.println("Listado de alumnos del curso " + curso.getDescripcion());
                 System.out.println("============================================================");
-                for (int i = 0; i < curso.getPersonas().size(); i++) {
-                    if(curso.getPersonas().get(i) instanceof Alumno) {
-                        ((Alumno) curso.getPersonas().get(i)).mostrarDatos();
-                    }
+                List <Alumno> alumnos = alumnoDAOImpl.getAllByCurso(curso);
+                for (Alumno alumno: alumnos){
+                    alumno.mostrarDatos();
                 }
             }else{
                 System.out.println("El curso no tiene alumnos asignados.");

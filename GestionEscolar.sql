@@ -28,7 +28,10 @@ CREATE TABLE `alumnos` (
   `apellidos` varchar(100) DEFAULT NULL,
   `poblacion` varchar(100) DEFAULT NULL,
   `f_nacimiento` date DEFAULT NULL,
-  PRIMARY KEY (`codigo`)
+  `c_curso` int DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_alumnos_curso` (`c_curso`),
+  CONSTRAINT `fk_alumnos_curso` FOREIGN KEY (`c_curso`) REFERENCES `cursos` (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +41,7 @@ CREATE TABLE `alumnos` (
 
 LOCK TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (1,'Juan','Pérez García','Valencia','2005-03-12'),(2,'María','López Martínez','Madrid','2004-07-25'),(3,'Carlos','Sánchez Ruiz','Sevilla','2005-11-03'),(4,'Lucía','Fernández Gómez','Barcelona','2006-01-15'),(5,'David','García Torres','Bilbao','2004-09-08'),(6,'Ana','Moreno Díaz','Valencia','2005-06-21'),(7,'Javier','Jiménez Castro','Granada','2003-12-30'),(8,'Elena','Romero Vega','Zaragoza','2005-04-17'),(9,'Miguel','Navarro Ortiz','Murcia','2004-10-05'),(10,'Carmen','Rubio Herrera','Alicante','2006-02-11'),(11,'Pablo','Molina Castro','Córdoba','2005-08-14'),(12,'Sara','Delgado León','Toledo','2004-03-19'),(13,'Raúl','Ortega Cruz','Valladolid','2005-09-27'),(14,'Laura','Reyes Santos','Salamanca','2003-11-22'),(15,'Diego','Cano Morales','Burgos','2006-05-10'),(16,'Paula','Guerrero Ramos','Almería','2004-06-29'),(17,'Adrián','Prieto Núñez','Oviedo','2005-12-01'),(18,'Nuria','Méndez Gil','Santander','2003-07-07'),(19,'Iván','Serrano Iglesias','Logroño','2004-01-13'),(20,'Claudia','Flores Medina','Pamplona','2005-10-18'),(21,'Rubén','Vargas Soto','Huelva','2006-03-05'),(22,'Marta','Castillo Peña','Jaén','2004-08-23'),(23,'Hugo','Cabrera Ríos','León','2005-02-09'),(24,'Irene','Campos Silva','Cádiz','2003-09-16'),(25,'Álvaro','Fuentes Reyes','Lugo','2006-06-01'),(26,'Beatriz','Martín Lozano','Ourense','2004-12-20'),(27,'Sergio','Iglesias Pardo','Segovia','2005-07-11'),(28,'Cristina','Nieto Vega','Ávila','2003-05-03'),(29,'Fernando','Calvo Rojas','Cuenca','2004-11-28'),(30,'Patricia','Santana Ortega','Guadalajara','2005-01-06'),(31,'Andrés','Soto Márquez','Tarragona','2006-04-14'),(32,'Silvia','Ramos Cabrera','Girona','2003-10-31'),(33,'Óscar','Peña Fuentes','Castellón','2004-02-26'),(34,'Rocío','León Serrano','Badajoz','2005-08-02'),(35,'Guillermo','Vega Morales','Cáceres','2006-09-19'),(36,'Teresa','Ortega Ruiz','Melilla','2003-06-25'),(37,'Víctor','Cruz Herrera','Ceuta','2004-07-30'),(38,'Lorena','Navarro Gil','Soria','2005-03-08'),(39,'Emilio','Molina Vega','Teruel','2006-01-27'),(40,'Noelia','Castro Díaz','Huesca','2003-12-12');
+INSERT INTO `alumnos` VALUES (1,'José Vicente','Sánchez Vargues','Segorbe','1997-10-20',1),(2,'María','López Martínez','Madrid','2004-07-25',1),(3,'Carlos','Sánchez Ruiz','Sevilla','2005-11-03',1),(4,'Lucía','Fernández Gómez','Barcelona','2006-01-15',1),(5,'David','García Torres','Bilbao','2004-09-08',1),(6,'Ana','Moreno Díaz','Valencia','2005-06-21',1),(7,'Javier','Jiménez Castro','Granada','2003-12-30',1),(8,'Elena','Romero Vega','Zaragoza','2005-04-17',1),(9,'Miguel','Navarro Ortiz','Murcia','2004-10-05',1),(10,'Carmen','Rubio Herrera','Alicante','2006-02-11',1),(11,'Pablo','Molina Castro','Córdoba','2005-08-14',1),(12,'Sara','Delgado León','Toledo','2004-03-19',1),(13,'Raúl','Ortega Cruz','Valladolid','2005-09-27',1),(14,'Laura','Reyes Santos','Salamanca','2003-11-22',1),(15,'Diego','Cano Morales','Burgos','2006-05-10',1),(16,'Paula','Guerrero Ramos','Almería','2004-06-29',1),(17,'Adrián','Prieto Núñez','Oviedo','2005-12-01',1),(18,'Nuria','Méndez Gil','Santander','2003-07-07',1),(19,'Iván','Serrano Iglesias','Logroño','2004-01-13',1),(20,'Claudia','Flores Medina','Pamplona','2005-10-18',1),(21,'Rubén','Vargas Soto','Huelva','2006-03-05',2),(22,'Marta','Castillo Peña','Jaén','2004-08-23',2),(23,'Hugo','Cabrera Ríos','León','2005-02-09',2),(24,'Irene','Campos Silva','Cádiz','2003-09-16',2),(25,'Álvaro','Fuentes Reyes','Lugo','2006-06-01',2),(26,'Beatriz','Martín Lozano','Ourense','2004-12-20',2),(27,'Sergio','Iglesias Pardo','Segovia','2005-07-11',2),(28,'Cristina','Nieto Vega','Ávila','2003-05-03',2),(29,'Fernando','Calvo Rojas','Cuenca','2004-11-28',2),(30,'Patricia','Santana Ortega','Guadalajara','2005-01-06',2),(31,'Andrés','Soto Márquez','Tarragona','2006-04-14',2),(32,'Silvia','Ramos Cabrera','Girona','2003-10-31',2),(33,'Óscar','Peña Fuentes','Castellón','2004-02-26',2),(34,'Rocío','León Serrano','Badajoz','2005-08-02',2),(35,'Guillermo','Vega Morales','Cáceres','2006-09-19',2),(36,'Teresa','Ortega Ruiz','Melilla','2003-06-25',2),(37,'Víctor','Cruz Herrera','Ceuta','2004-07-30',2),(38,'Lorena','Navarro Gil','Soria','2005-03-08',2),(39,'Emilio','Molina Vega','Teruel','2006-01-27',2),(40,'Noelia','Castro Díaz','Huesca','2003-12-12',2),(41,'a','a','a','2010-10-10',1);
 /*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,4 +197,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-04  8:45:46
+-- Dump completed on 2026-05-04 10:47:53

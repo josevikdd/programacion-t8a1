@@ -759,12 +759,8 @@ public class GestionEscolar {
                 }*/
 
                 // Eliminamos al alumno de las asignaturas
-                for(int i=0;i<curso.getAsignaturas().size();i++){
-                    Asignatura asig = curso.getAsignaturas().get(i);
-                    asig.getAlumnos().remove(alumno);
-                }
-
-                curso.desasignarPersona(alumno);
+                alumnoDAOImpl.deleteAsignaturas(Long.valueOf(codigo));
+                alumnoDAOImpl.deleteById(Long.valueOf(codigo));
                 System.out.println("Alumno borrado correctamente.");
             }
         }
@@ -867,17 +863,18 @@ public class GestionEscolar {
                 // Seleccionamos un profesor que tenga menos de 2 asignaturas asignadas
                 profesor = seleccionarProfesor(curso);
                 // Recorremos las asignaturas
-                for(int i=0;i<profesor.getAsignaturas().size();i++){
-                    Asignatura asignatura = profesor.getAsignaturas().get(i);
-                    List<Alumno> listaAlumnos = asignatura.getAlumnos();
+                List<Asignatura> asignaturas =  asignaturaDAOImpl.getAllByProfe(profesor);
+                for(Asignatura asignatura: asignaturas){
+
+                    List<Alumno> listaAlumnos = alumnoDAOImpl.getAllByAsignatura(asignatura);
                     if(listaAlumnos.size()<=0){
                         System.out.println("No hay alumnos para la asignatura " + asignatura.getNombre());
                     }else{
                         System.out.println("============================================================");
                         System.out.println("Lista de alumnos de la asignatura " + asignatura.getNombre());
                         System.out.println("============================================================");
-                        for(int j=0;j<listaAlumnos.size();j++){
-                            listaAlumnos.get(j).mostrarDatos();
+                        for(Alumno alumno: listaAlumnos){
+                            alumno.mostrarDatos();
                         }
                     }
                 }

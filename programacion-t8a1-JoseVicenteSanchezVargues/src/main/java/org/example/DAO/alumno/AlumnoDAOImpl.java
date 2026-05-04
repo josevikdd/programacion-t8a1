@@ -1,6 +1,7 @@
 package org.example.DAO.alumno;
 
 import org.example.modelo.Alumno;
+import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
 import org.example.modelo.Profesor;
 import org.example.utils.ConexionBD;
@@ -92,7 +93,16 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 
     @Override
     public int deleteById(Long id) {
-        return 0;
+        String sql = "DELETE FROM alumnos WHERE codigo=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
@@ -103,6 +113,54 @@ public class AlumnoDAOImpl implements AlumnoDAO {
             String sql = "SELECT * FROM alumnos WHERE c_curso=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, curso.getCodigo());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String poblacion = rs.getString("poblacion");
+                LocalDate fNacimiento = LocalDate.parse(rs.getString("f_nacimiento"));
+
+                Alumno alumno = new Alumno(codigo, nombre, apellidos, poblacion, fNacimiento);
+                alumnos.add(alumno);
+            }
+            rs.close();
+            ps.close();
+            return alumnos;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int deleteAsignaturas(Long codAlumno) {
+        String sql = "DELETE FROM alumnos_asignaturas WHERE codigo_alumno=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, codAlumno);
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public List<Alumno> getAllByAsignatura(Asignatura asignatura) {
+        List<Alumno> alumnos = new ArrayList<Alumno>();
+
+        try {
+            String sql = "SELECT *\n" +
+                            "FROM alumnos a\n" +
+                                "INNER JOIN alumnos_asignaturas aa ON a.codigo = aa.codigo_alumno \n" +
+                            "WHERE aa.codigo_asignatura = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, asignatura.getCodigo());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

@@ -38,7 +38,35 @@ CREATE TABLE `alumnos` (
 
 LOCK TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
+INSERT INTO `alumnos` VALUES (1,'Juan','Pérez García','Valencia','2005-03-12'),(2,'María','López Martínez','Madrid','2004-07-25'),(3,'Carlos','Sánchez Ruiz','Sevilla','2005-11-03'),(4,'Lucía','Fernández Gómez','Barcelona','2006-01-15'),(5,'David','García Torres','Bilbao','2004-09-08'),(6,'Ana','Moreno Díaz','Valencia','2005-06-21'),(7,'Javier','Jiménez Castro','Granada','2003-12-30'),(8,'Elena','Romero Vega','Zaragoza','2005-04-17'),(9,'Miguel','Navarro Ortiz','Murcia','2004-10-05'),(10,'Carmen','Rubio Herrera','Alicante','2006-02-11'),(11,'Pablo','Molina Castro','Córdoba','2005-08-14'),(12,'Sara','Delgado León','Toledo','2004-03-19'),(13,'Raúl','Ortega Cruz','Valladolid','2005-09-27'),(14,'Laura','Reyes Santos','Salamanca','2003-11-22'),(15,'Diego','Cano Morales','Burgos','2006-05-10'),(16,'Paula','Guerrero Ramos','Almería','2004-06-29'),(17,'Adrián','Prieto Núñez','Oviedo','2005-12-01'),(18,'Nuria','Méndez Gil','Santander','2003-07-07'),(19,'Iván','Serrano Iglesias','Logroño','2004-01-13'),(20,'Claudia','Flores Medina','Pamplona','2005-10-18'),(21,'Rubén','Vargas Soto','Huelva','2006-03-05'),(22,'Marta','Castillo Peña','Jaén','2004-08-23'),(23,'Hugo','Cabrera Ríos','León','2005-02-09'),(24,'Irene','Campos Silva','Cádiz','2003-09-16'),(25,'Álvaro','Fuentes Reyes','Lugo','2006-06-01'),(26,'Beatriz','Martín Lozano','Ourense','2004-12-20'),(27,'Sergio','Iglesias Pardo','Segovia','2005-07-11'),(28,'Cristina','Nieto Vega','Ávila','2003-05-03'),(29,'Fernando','Calvo Rojas','Cuenca','2004-11-28'),(30,'Patricia','Santana Ortega','Guadalajara','2005-01-06'),(31,'Andrés','Soto Márquez','Tarragona','2006-04-14'),(32,'Silvia','Ramos Cabrera','Girona','2003-10-31'),(33,'Óscar','Peña Fuentes','Castellón','2004-02-26'),(34,'Rocío','León Serrano','Badajoz','2005-08-02'),(35,'Guillermo','Vega Morales','Cáceres','2006-09-19'),(36,'Teresa','Ortega Ruiz','Melilla','2003-06-25'),(37,'Víctor','Cruz Herrera','Ceuta','2004-07-30'),(38,'Lorena','Navarro Gil','Soria','2005-03-08'),(39,'Emilio','Molina Vega','Teruel','2006-01-27'),(40,'Noelia','Castro Díaz','Huesca','2003-12-12');
 /*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alumnos_asignaturas`
+--
+
+DROP TABLE IF EXISTS `alumnos_asignaturas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alumnos_asignaturas` (
+  `codigo_alumno` int NOT NULL,
+  `codigo_asignatura` int NOT NULL,
+  PRIMARY KEY (`codigo_alumno`,`codigo_asignatura`),
+  KEY `codigo_asignatura` (`codigo_asignatura`),
+  CONSTRAINT `alumnos_asignaturas_ibfk_1` FOREIGN KEY (`codigo_alumno`) REFERENCES `alumnos` (`codigo`),
+  CONSTRAINT `alumnos_asignaturas_ibfk_2` FOREIGN KEY (`codigo_asignatura`) REFERENCES `asignaturas` (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alumnos_asignaturas`
+--
+
+LOCK TABLES `alumnos_asignaturas` WRITE;
+/*!40000 ALTER TABLE `alumnos_asignaturas` DISABLE KEYS */;
+INSERT INTO `alumnos_asignaturas` VALUES (1,111),(2,111),(3,111),(4,111),(5,111),(6,111),(7,111),(8,111),(9,111),(10,111),(11,111),(12,111),(13,111),(14,111),(15,111),(16,111),(17,111),(18,111),(19,111),(20,111),(1,112),(2,112),(3,112),(4,112),(5,112),(6,112),(7,112),(8,112),(9,112),(10,112),(11,112),(12,112),(13,112),(14,112),(15,112),(16,112),(17,112),(18,112),(19,112),(20,112),(1,113),(2,113),(3,113),(4,113),(5,113),(6,113),(7,113),(8,113),(9,113),(10,113),(11,113),(12,113),(13,113),(14,113),(15,113),(16,113),(17,113),(18,113),(19,113),(20,113),(1,114),(2,114),(3,114),(4,114),(5,114),(6,114),(7,114),(8,114),(9,114),(10,114),(11,114),(12,114),(13,114),(14,114),(15,114),(16,114),(17,114),(18,114),(19,114),(20,114),(1,115),(2,115),(3,115),(4,115),(5,115),(6,115),(7,115),(8,115),(9,115),(10,115),(11,115),(12,115),(13,115),(14,115),(15,115),(16,115),(17,115),(18,115),(19,115),(20,115),(1,116),(2,116),(3,116),(4,116),(5,116),(6,116),(7,116),(8,116),(9,116),(10,116),(11,116),(12,116),(13,116),(14,116),(15,116),(16,116),(17,116),(18,116),(19,116),(20,116),(1,117),(2,117),(3,117),(4,117),(5,117),(6,117),(7,117),(8,117),(9,117),(10,117),(11,117),(12,117),(13,117),(14,117),(15,117),(16,117),(17,117),(18,117),(19,117),(20,117),(1,118),(2,118),(3,118),(4,118),(5,118),(6,118),(7,118),(8,118),(9,118),(10,118),(11,118),(12,118),(13,118),(14,118),(15,118),(16,118),(17,118),(18,118),(19,118),(20,118);
+/*!40000 ALTER TABLE `alumnos_asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -67,7 +95,7 @@ CREATE TABLE `asignaturas` (
 
 LOCK TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
-INSERT INTO `asignaturas` VALUES (111,'Programación',1,1),(112,'Bases de datos',NULL,1);
+INSERT INTO `asignaturas` VALUES (111,'Programación',1,1),(112,'Bases de datos',2,1),(113,'LMSGE',3,1),(114,'Inglés profesional',4,1),(115,'Entornos de desarrollo',5,1),(116,'IPE',6,1),(117,'Proyecto Intermodular',7,1),(118,'Tutoria',8,1);
 /*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,4 +194,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-02 22:43:26
+-- Dump completed on 2026-05-04  8:45:46

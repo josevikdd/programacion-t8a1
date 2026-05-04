@@ -95,6 +95,11 @@ public class Curso implements CursoDAO {
     }
 
     @Override
+    public int findByAlumno(Long codAlumno) {
+        return 0;
+    }
+
+    @Override
     public Curso findById(Long id) {
         return null;
     }

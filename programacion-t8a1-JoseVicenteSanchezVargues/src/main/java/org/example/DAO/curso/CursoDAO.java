@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CursoDAO extends IOperationsCRUD<Curso> {
     public List<Curso> getAll();
+    public int findByAlumno(Long codAlumno);
 }

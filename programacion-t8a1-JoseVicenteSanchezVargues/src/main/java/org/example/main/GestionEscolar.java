@@ -1,5 +1,6 @@
 package org.example.main;
 
+import org.example.DAO.alumno.AlumnoDAOImpl;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.FactoriaDAO;
@@ -20,6 +21,7 @@ public class GestionEscolar {
     private static CursoDAOImpl cursoDAOImpl = FactoriaDAO.getCursoDAO();
     private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
     private static ProfesorDAOImpl  profesorDAOImpl = FactoriaDAO.getProfesorDAO();
+    private static AlumnoDAOImpl alumnoDAOImpl = FactoriaDAO.getAlumnoDAO();
 
     public static void main(String[] args) {
 
@@ -307,35 +309,7 @@ public class GestionEscolar {
      */
     private static Alumno buscarAlumno(int codigo) {
         // Creamos una variable alumno para buscarla en los cursos
-        Alumno alumno = new Alumno();
-        alumno.setCodigo(codigo);
-        // Variable para parar el while cuando la encuentra
-        boolean enc = false;
-        // Variabla para recorrer la lista de cursos
-        int i = 0;
-        // Variable para almacenar la posicion de la asignatura en el curso
-        int posicion = 0;
-        while ((i < cursos.size()) && (enc == false)) {
-            // Comprobamos si el alumno está en un curso en concreto
-            Curso c = cursos.get(i);
-            if (c.getPersonas().contains(alumno)) {
-                // Si la encontramos la devolvemos a la variable asignatura mediante la posicion
-                posicion = c.getPersonas().indexOf(alumno);
-                alumno = (Alumno) c.getPersonas().get(posicion);
-                // cambiamos enc para que el bucle pare
-                enc = true;
-            }
-            // Si no lo encuentra aumentamos el indice
-            else {
-                i++;
-            }
-        }
-        // Comprobamos si lo ha encontrado o no
-        if (enc == true) {
-            return alumno;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -726,23 +700,27 @@ public class GestionEscolar {
             String apellidos = InputUtils.readString(sc, "Introduzca los apellidos del alumno: ");
             String poblacion = InputUtils.readString(sc, "Introduzca la población del alumno: ");
             LocalDate fechaNacimiento = InputUtils.readLocalDate(sc, "Introduzca la fecha de nacimiento del alumno: ");
-            alumno = buscarAlumno(codigo);
+            alumno = alumnoDAOImpl.findById(Long.valueOf(codigo));
             // Comprobamos si no existe el alumno
             if(alumno==null){
-                alumno = new Alumno(codigo, nombre, apellidos, poblacion, fechaNacimiento);
-                curso.asignarPersona(alumno);
+                alumno = new Alumno (codigo, nombre, apellidos, poblacion, fechaNacimiento);
+                alumnoDAOImpl.add(alumno, codigoCurso);
                 System.out.println("Alumno insertado correctamente en el curso.");
             }
             // Si el alumno existe debemos comprobar si está en el curso correcto
             else{
                 // Comprobamos si el alumno está en el curso adecuado, sino sale del proceso
-                if (alumno.getCurso() != curso) {
+                //Curso cursoActual = null;
+                 int cursoActual = cursoDAOImpl.findByAlumno(Long.valueOf(codigo));
+
+                if (cursoActual != curso.getCodigo()) {
                     System.out.println("El alumno existe en otro curso distinto.");
                 } else {
                     alumno.setNombre(nombre);
                     alumno.setApellidos(apellidos);
                     alumno.setPoblacion(poblacion);
                     alumno.setFechaNacimiento(fechaNacimiento);
+                    alumnoDAOImpl.update(alumno);
                     System.out.println("Alumno actualizado correctamente.");
                 }
             }

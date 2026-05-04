@@ -103,7 +103,30 @@ public class CursoDAOImpl implements CursoDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setLong(1, id);
             int i = ps.executeUpdate();
+            ps.close();
             return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int findByAlumno(Long codAlumno) {
+        String sql = "SELECT * FROM alumnos WHERE codigo =?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, codAlumno);
+            ResultSet rs = ps.executeQuery();
+
+            int codigo = 0;
+            while (rs.next()){
+                codigo = rs.getInt("c_curso");
+            }
+            rs.close();
+            ps.close();
+            return codigo;
+
         } catch (Exception e){
             e.printStackTrace();
             return -1;

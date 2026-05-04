@@ -1,5 +1,6 @@
 package org.example.DAO;
 
+import org.example.DAO.alumno.AlumnoDAOImpl;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.profesor.ProfesorDAOImpl;
@@ -9,6 +10,7 @@ public class FactoriaDAO {
     private static CursoDAOImpl cursoDAOImpl = null;
     private static AsignaturaDAOImpl asignaturaDAOImpl = null;
     private static ProfesorDAOImpl profesorDAOImpl = null;
+    private static AlumnoDAOImpl alumnoDAOImpl = null;
 
     public static CursoDAOImpl getCursoDAO() {
         if (cursoDAOImpl == null) {
@@ -29,5 +31,12 @@ public class FactoriaDAO {
             profesorDAOImpl = new ProfesorDAOImpl();
         }
         return profesorDAOImpl;
+    }
+
+    public static AlumnoDAOImpl getAlumnoDAO() {
+        if (alumnoDAOImpl == null) {
+            alumnoDAOImpl = new AlumnoDAOImpl();
+        }
+        return alumnoDAOImpl;
     }
 }

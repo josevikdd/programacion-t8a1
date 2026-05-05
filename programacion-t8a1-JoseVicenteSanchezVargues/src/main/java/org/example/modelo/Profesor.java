@@ -32,4 +32,12 @@ public class Profesor extends Persona implements Mostrable{
                 this.getFechaNacimiento().toString() + ", " +
                 this.telefono + ", " + this.categoria + "]");
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
 }

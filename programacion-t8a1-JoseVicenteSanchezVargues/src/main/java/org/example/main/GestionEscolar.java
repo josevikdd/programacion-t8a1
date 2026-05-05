@@ -39,17 +39,19 @@ public class GestionEscolar {
                 case 2 -> bajaCurso();
                 case 3 -> altaAsignatura();
                 case 4 -> bajaAsignatura();
-                case 5 -> altaDocencia();
-                case 6 -> bajaDocencia();
-                case 7 -> altaAlumno();
-                case 8 -> bajaAlumno();
-                case 9 -> ponerNota();
-                case 10 -> listarCursos();
-                case 11 -> listarAsignaturasCurso();
-                case 12 -> listarProfesoresCurso();
-                case 13 -> listarAlumnosCurso();
-                case 14 -> listarAlumnosAsignaturaProfesor();
-                case 15 -> listarNotasAlumno();
+                case 5 -> altaProfesor();
+                case 6 -> bajaProfesor();
+                case 7 -> altaDocencia();
+                case 8 -> bajaDocencia();
+                case 9 -> altaAlumno();
+                case 10 -> bajaAlumno();
+                case 11 -> ponerNota();
+                case 12 -> listarCursos();
+                case 13 -> listarAsignaturasCurso();
+                case 14 -> listarProfesoresCurso();
+                case 15 -> listarAlumnosCurso();
+                case 16 -> listarAlumnosAsignaturaProfesor();
+                case 17 -> listarNotasAlumno();
                 case 0 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción no válida.");
             }
@@ -63,17 +65,19 @@ public class GestionEscolar {
         System.out.println("2. Baja curso");
         System.out.println("3. Alta asignatura");
         System.out.println("4. Baja asignatura");
-        System.out.println("5. Alta docencia");
-        System.out.println("6. Baja docencia");
-        System.out.println("7. Alta alumno");
-        System.out.println("8. Baja alumno");
-        System.out.println("9. Poner nota");
-        System.out.println("10. Listar cursos");
-        System.out.println("11. Listar asignaturas de un curso");
-        System.out.println("12. Listar profesores del curso");
-        System.out.println("13. Listar alumnos del curso");
-        System.out.println("14. Listar alumnos de las asignaturas de un profesor");
-        System.out.println("15. Listar notas del alumno");
+        System.out.println("5. Alta Profesor");
+        System.out.println("6. Baja Profesor");
+        System.out.println("7. Alta docencia");
+        System.out.println("8. Baja docencia");
+        System.out.println("9. Alta alumno");
+        System.out.println("10. Baja alumno");
+        System.out.println("11. Poner nota");
+        System.out.println("12. Listar cursos");
+        System.out.println("13. Listar asignaturas de un curso");
+        System.out.println("14. Listar profesores del curso");
+        System.out.println("15. Listar alumnos del curso");
+        System.out.println("16. Listar alumnos de las asignaturas de un profesor");
+        System.out.println("17. Listar notas del alumno");
         System.out.println("0. Salir");
         System.out.print("");
     }
@@ -190,6 +194,52 @@ public class GestionEscolar {
     private static void borrarAsignatura(int codigo) {
         asignaturaDAOImpl.deleteRelacionesById(Long.valueOf(codigo));
         asignaturaDAOImpl.deleteById(Long.valueOf(codigo));
+    }
+
+    private static void altaProfesor() {
+        int codigoCurso = InputUtils.readInt(sc, "Código del curso: ");
+
+        Curso curso = buscarCurso(codigoCurso);
+        Profesor profesor = null;
+        if (curso == null) {
+            System.out.println("Curso no encontrado.");
+        } else {
+            int codigo = InputUtils.readInt(sc, "Introduzca el código del profesor: ");
+            String nombre = InputUtils.readString(sc, "Introduzca el nombre del profesor: ");
+            String apellidos = InputUtils.readString(sc, "Introduzca los apellidos del profesor: ");
+            String poblacion = InputUtils.readString(sc, "Introduzca la población del profesor: ");
+            LocalDate fechaNacimiento = InputUtils.readLocalDate(sc, "Introduzca la fecha de nacimiento del profesor: ");
+            String telefono = InputUtils.readString(sc, "Introduzca el teléfono del profesor: ");
+            String categoria = InputUtils.readString(sc, "Introduzca la categoria del profesor: ");
+            profesor = profesorDAOImpl.findById(Long.valueOf(codigo));
+
+            if(profesor==null){
+                profesor = new Profesor (codigo, nombre, apellidos, poblacion, fechaNacimiento, telefono, categoria);
+                profesor.setCurso(curso);
+                profesorDAOImpl.add(profesor);
+
+                System.out.println("Profesor insertado correctamente en el curso.");
+            }
+            else{
+                System.out.println("Ya existe un profesor con el código ingresado.");
+            }
+        }
+    }
+
+    private static void bajaProfesor() {
+        int codigoCurso = InputUtils.readInt(sc, "Código del curso: ");
+
+        Profesor profesor = null;
+        profesor = seleccionarProfesor(cursoDAOImpl.findById(Long.valueOf(codigoCurso)));
+
+        if (profesor != null) {
+            asignaturaDAOImpl.deleteProfesor(profesor);
+            profesorDAOImpl.deleteById(Long.valueOf(profesor.getCodigo()));
+            System.out.println("Profesor eliminado correctamente.");
+        }
+        else {
+            System.out.println("Error: Profesor no encontrado.");
+        }
     }
 
     /**

@@ -50,7 +50,24 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
     @Override
     public int add(Profesor object) {
-        return 0;
+        String sql = "INSERT INTO profesores (codigo, nombre, apellidos, poblacion, f_nacimiento, telefono, categoria, c_curso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, object.getCodigo());
+            ps.setString(2, object.getNombre());
+            ps.setString(3, object.getApellidos());
+            ps.setString(4, object.getPoblacion());
+            ps.setDate(5, java.sql.Date.valueOf(object.getFechaNacimiento()));
+            ps.setString(6, object.getTelefono());
+            ps.setString(7, object.getCategoria());
+            ps.setInt(8, object.getCurso().getCodigo());
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
@@ -60,7 +77,16 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
     @Override
     public int deleteById(Long id) {
-        return 0;
+        String sql = "DELETE FROM profesores WHERE codigo=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override

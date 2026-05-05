@@ -207,4 +207,18 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             return -1;
         }
     }
+
+    @Override
+    public int deleteProfesor(Profesor profesor) {
+        String sql = "UPDATE asignaturas SET c_profesor=NULL WHERE  c_profesor=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, profesor.getCodigo());
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

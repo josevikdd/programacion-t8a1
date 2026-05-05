@@ -707,7 +707,11 @@ public class GestionEscolar {
             // Comprobamos si no existe el alumno
             if(alumno==null){
                 alumno = new Alumno (codigo, nombre, apellidos, poblacion, fechaNacimiento);
+                List <Asignatura> asignaturas = asignaturaDAOImpl.getAllByCurso(curso);
                 alumnoDAOImpl.add(alumno, codigoCurso);
+                for (Asignatura asignatura : asignaturas) {
+                    alumnoDAOImpl.addRelaciones(alumno, asignatura.getCodigo());
+                }
                 System.out.println("Alumno insertado correctamente en el curso.");
             }
             // Si el alumno existe debemos comprobar si está en el curso correcto

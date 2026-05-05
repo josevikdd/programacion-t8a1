@@ -1,5 +1,7 @@
 package org.example.DAO.alumno;
 
+import org.example.DAO.FactoriaDAO;
+import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.modelo.Alumno;
 import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
@@ -16,6 +18,7 @@ import java.util.List;
 public class AlumnoDAOImpl implements AlumnoDAO {
 
     private Connection conn = ConexionBD.getConnection();
+    private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
 
     @Override
     public Alumno findById(Long id) {
@@ -63,6 +66,22 @@ public class AlumnoDAOImpl implements AlumnoDAO {
             ps.setString(4, object.getPoblacion());
             ps.setDate(5, java.sql.Date.valueOf(object.getFechaNacimiento()));
             ps.setInt(6, codCurso);
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int addRelaciones(Alumno object, int codAsignatura) {
+        String sql = "INSERT INTO alumnos_asignaturas (codigo_alumno, codigo_asignatura) VALUES (?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, object.getCodigo());
+            ps.setInt(2, codAsignatura);
             int i = ps.executeUpdate();
             ps.close();
             return i;

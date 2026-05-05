@@ -13,4 +13,5 @@ public interface AlumnoDAO extends IOperationsCRUD<Alumno> {
     public int deleteAsignaturas(Long codAlumno);
     public List<Alumno> getAllByAsignatura(Asignatura asignatura);
     public int deleteRelacionesById (Long id);
+    public int addRelaciones(Alumno object, int codAsignatura);
 }

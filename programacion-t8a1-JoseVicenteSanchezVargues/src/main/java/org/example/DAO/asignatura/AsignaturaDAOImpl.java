@@ -173,6 +173,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, profesor.getCodigo());
             ps.setInt(2, curso.getCodigo());
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -180,6 +181,7 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
                 String nombre = rs.getString("nombre");
 
                 Asignatura asignatura = new Asignatura(codigo, nombre);
+                asignatura.impartir(profesor, curso);
                 asignaturas.add(asignatura);
             }
             rs.close();

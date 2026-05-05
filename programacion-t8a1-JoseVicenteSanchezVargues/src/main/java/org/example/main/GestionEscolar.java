@@ -424,9 +424,8 @@ public class GestionEscolar {
         while (asignatura == null) {
             int codigoAsignatura = InputUtils.readInt(sc, "Seleccione un código de asignatura de los mostrados: ");
             asignatura = new Asignatura();
-            asignatura.setCodigo(codigoAsignatura);
-            asignatura = asignaturas.get(asignaturas.indexOf(asignatura));
-            if (asignatura != null) {
+            asignatura = asignaturaDAOImpl.findById(Long.valueOf(codigoAsignatura));
+            if (asignatura == null) {
                 System.out.println("Error: Asignatura no encontrada.");
             }
         }

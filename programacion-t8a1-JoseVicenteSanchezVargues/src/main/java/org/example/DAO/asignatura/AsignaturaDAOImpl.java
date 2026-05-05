@@ -191,4 +191,18 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             return null;
         }
     }
+
+    @Override
+    public int deleteRelacionesById(Long id) {
+        String sql = "DELETE FROM alumnos_asignaturas WHERE codigo_asignatura=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

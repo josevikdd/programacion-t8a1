@@ -107,4 +107,34 @@ public class ExamenDAOImpl implements ExamenDAO {
             return null;
         }
     }
+
+    @Override
+    public int deleteByAlumnoId(Long id) {
+        String sql = "DELETE FROM examenes WHERE c_alumno=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int deleteByAsignaturaId(Long id) {
+        String sql = "DELETE FROM examenes WHERE c_asignatura=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            ps.close();
+            return i;
+        } catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

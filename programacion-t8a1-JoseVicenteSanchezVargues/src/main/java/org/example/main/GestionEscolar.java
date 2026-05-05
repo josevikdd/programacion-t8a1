@@ -174,16 +174,22 @@ public class GestionEscolar {
 
         int codigo = InputUtils.readInt(sc, "Código de la asignatura a borrar: ");
 
-        // Como la asignatura solo puede estar en un curso al borrarla del curso se borrará
 
         // Localizamos la asignatura
         Asignatura asignatura = buscarAsignatura(codigo);
         if (asignatura != null) {
-            asignaturaDAOImpl.deleteById(Long.valueOf(codigo));
+            examenDAOImpl.deleteByAsignaturaId(Long.valueOf(codigo));
+            borrarAsignatura(codigo);
+
             System.out.println("Asignatura eliminada.");
         } else {
             System.out.println("No existe la asignatura.");
         }
+    }
+
+    private static void borrarAsignatura(int codigo) {
+        asignaturaDAOImpl.deleteRelacionesById(Long.valueOf(codigo));
+        asignaturaDAOImpl.deleteById(Long.valueOf(codigo));
     }
 
     /**
@@ -742,20 +748,11 @@ public class GestionEscolar {
             if (cursoActual != curso.getCodigo()) {
                 System.out.println("El alumno existe en otro curso distinto.");
             } else {
-                // Eliminamos los examenes de las asignatura.
-                // Para ello usamos un iterator para poder borrar sin problemas
-                /*Iterator<Examen> it = alumno.getExamenes().iterator();
-
-                while (it.hasNext()) {
-                    Examen examen = it.next();
-                    Asignatura asignatura = examen.getAsignatura();
-                    // Borramos el examen de la asignatura y de la lista de alumnos
-                    asignatura.getExamenes().remove(examen);
-                    asignatura.getAlumnos().remove(alumno);
-                    it.remove();
-                }*/
+                // Eliminamos los examenes del alumno.
+                examenDAOImpl.deleteByAlumnoId(Long.valueOf(codigo));
 
                 // Eliminamos al alumno de las asignaturas
+                alumnoDAOImpl.deleteRelacionesById(Long.valueOf(codigo));
                 alumnoDAOImpl.deleteAsignaturas(Long.valueOf(codigo));
                 alumnoDAOImpl.deleteById(Long.valueOf(codigo));
                 System.out.println("Alumno borrado correctamente.");

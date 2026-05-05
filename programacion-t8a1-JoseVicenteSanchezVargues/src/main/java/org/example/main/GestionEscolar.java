@@ -317,7 +317,7 @@ public class GestionEscolar {
     /**
      * Buscar alumno en una lista en concreto
      **/
-    private static Alumno buscarAlumno(int codigo, List<Persona> lista) {
+    private static Alumno buscarAlumno(int codigo, List<Alumno> lista) {
         int i = 0;
         boolean encontrado = false;
 
@@ -329,7 +329,7 @@ public class GestionEscolar {
             }
         }
         if (encontrado==true){
-            return (Alumno) lista.get(i);
+            return lista.get(i);
         }else{
             return null;
         }
@@ -343,17 +343,15 @@ public class GestionEscolar {
         System.out.println("=========================================");
         System.out.println("Lista de alumnos del curso.");
         System.out.println("=========================================");
-        for (int i = 0; i < curso.getPersonas().size(); i++) {
-            if (curso.getPersonas().get(i) instanceof Alumno) {
-                Alumno p = (Alumno) curso.getPersonas().get(i);
-                p.mostrarDatos();
-            }
+        List <Alumno> alumnos = alumnoDAOImpl.getAllByCurso(curso);
+        for (Alumno alumno : alumnos) {
+            alumno.mostrarDatos();
         }
         Alumno alumno = null;
         // Vamos pidiendo un alumno hasta tenerlo
         while (alumno == null) {
             int codigoAlumno = InputUtils.readInt(sc, "Seleccione un código de alumno de los mostrados: ");
-            alumno = buscarAlumno(codigoAlumno, curso.getPersonas());
+            alumno = buscarAlumno(codigoAlumno, alumnos);
             if (alumno == null) {
                 System.out.println("Error: Alumno no encontrado.");
             }
@@ -896,19 +894,20 @@ public class GestionEscolar {
         } else {
             alumno = seleccionarAlumno(curso);
             // Comprobamos si el alumno está en el curso adecuado, si no sale del proceso
-            if (alumno.getCurso() != curso) {
+            int cursoActual = cursoDAOImpl.findByAlumno(Long.valueOf(alumno.getCodigo()));
+            if (curso.getCodigo() != cursoActual) {
                 System.out.println("El alumno existe en otro curso distinto.");
             } else {
-                if(alumno.getExamenes().size()>0) {
+                List<Examen> examenes = examenDAOImpl.getAllByCodAlumno(alumno.getCodigo());
+                if(examenes.size()>0) {
                     // Mostramos la lista de examenes y notas
                     System.out.println("============================================================================");
                     System.out.println("Lista de exámenes y notas del alumno " + alumno.getNombre() + " " + alumno.getApellidos());
                     System.out.println("============================================================================");
                     // Ordenamos la lista por fecha
-                    Collections.sort(alumno.getExamenes());
-                    for (int i = 0; i < alumno.getExamenes().size(); i++) {
-                        Examen e = alumno.getExamenes().get(i);
-                        System.out.println(e.toString());
+                    Collections.sort(examenes);
+                    for (Examen examen : examenes) {
+                        System.out.println(examen.toString());
                     }
                 }else{
                     System.out.println("El alumno no tiene exámenes.");

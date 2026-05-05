@@ -3,6 +3,8 @@ package org.example.DAO.examen;
 import org.example.DAO.IOperationsCRUD;
 import org.example.modelo.Examen;
 
-public interface ExamenDAO extends IOperationsCRUD<Examen> {
+import java.util.List;
 
+public interface ExamenDAO extends IOperationsCRUD<Examen> {
+    public List<Examen> getAllByCodAlumno(int codAlumno);
 }

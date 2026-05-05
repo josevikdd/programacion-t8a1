@@ -1,6 +1,11 @@
 package org.example.DAO.examen;
 
+import org.example.DAO.FactoriaDAO;
 import org.example.DAO.IOperationsCRUD;
+import org.example.DAO.alumno.AlumnoDAOImpl;
+import org.example.DAO.asignatura.AsignaturaDAOImpl;
+import org.example.modelo.Alumno;
+import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
 import org.example.modelo.Examen;
 import org.example.utils.ConexionBD;
@@ -8,10 +13,15 @@ import org.example.utils.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExamenDAOImpl implements ExamenDAO {
 
     private Connection conn = ConexionBD.getConnection();
+    private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
+    private static AlumnoDAOImpl alumnoDAOImpl = FactoriaDAO.getAlumnoDAO();
 
     @Override
     public Examen findById(Long id) {
@@ -65,5 +75,36 @@ public class ExamenDAOImpl implements ExamenDAO {
     @Override
     public int deleteById(Long id) {
         return 0;
+    }
+
+    @Override
+    public List<Examen> getAllByCodAlumno(int codAlumno) {
+        List<Examen> examenes = new ArrayList<Examen>();
+
+        try {
+            String sql = "SELECT * FROM examenes WHERE c_alumno=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, codAlumno);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                LocalDate fecha = rs.getDate("fecha").toLocalDate();
+                float nota = rs.getFloat("nota");
+                Asignatura asignatura = asignaturaDAOImpl.findById(Long.valueOf(rs.getString("c_asignatura")));
+                Alumno alumno = alumnoDAOImpl.findById(Long.valueOf(rs.getString("c_alumno")));
+
+                Examen examen = new Examen(codigo, alumno, asignatura, fecha, nota);
+
+                examenes.add(examen);
+            }
+            rs.close();
+            ps.close();
+            return examenes;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

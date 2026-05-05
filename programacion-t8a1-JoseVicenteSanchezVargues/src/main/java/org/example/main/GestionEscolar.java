@@ -127,7 +127,7 @@ public class GestionEscolar {
      */
     private static Curso buscarCurso(int codigo) {
         if (cursoDAOImpl.findById(Long.valueOf(codigo)) == null) {
-            System.out.println("El curso indicado no existe");
+            System.out.println("El curso indicado no existe.");
             return null;
         }
         else {

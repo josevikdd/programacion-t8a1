@@ -1,6 +1,5 @@
 package org.example.DAO.curso;
 
-import org.example.DAO.IOperationsCRUD;
 import org.example.modelo.Curso;
 import org.example.utils.ConexionBD;
 

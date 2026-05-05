@@ -21,10 +21,6 @@ public class Profesor extends Persona implements Mostrable{
         this.categoria = categoria;
     }
 
-    public List<Asignatura> getAsignaturas() {
-        return asignaturas;
-    }
-
     @Override
     public void mostrarDatos() {
         System.out.println("Profesor[" + this.getCodigo() + ", " + this.getNombre() + " " +

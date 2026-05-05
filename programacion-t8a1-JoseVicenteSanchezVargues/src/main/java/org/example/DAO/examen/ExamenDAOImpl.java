@@ -1,12 +1,10 @@
 package org.example.DAO.examen;
 
 import org.example.DAO.FactoriaDAO;
-import org.example.DAO.IOperationsCRUD;
 import org.example.DAO.alumno.AlumnoDAOImpl;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.modelo.Alumno;
 import org.example.modelo.Asignatura;
-import org.example.modelo.Curso;
 import org.example.modelo.Examen;
 import org.example.utils.ConexionBD;
 

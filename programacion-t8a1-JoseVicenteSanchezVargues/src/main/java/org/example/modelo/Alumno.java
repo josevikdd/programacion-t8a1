@@ -9,7 +9,6 @@ public class Alumno extends Persona implements Mostrable{
     // Relaciones
     // Se hace final para que no se pueda cambiar ni reasignar de nuevo
     private final List<Examen> examenes = new ArrayList<>();
-    private final List<Asignatura> asignaturas = new ArrayList<>();
 
     public Alumno(int codigo, String nombre, String apellidos,
                   String poblacion, LocalDate fechaNacimiento) {
@@ -22,11 +21,6 @@ public class Alumno extends Persona implements Mostrable{
 
     public List<Examen> getExamenes() {
         return examenes;
-    }
-
-    public void matricular(Asignatura asignatura){
-        this.asignaturas.add(asignatura);
-        asignatura.getAlumnos().add(this);
     }
 
     @Override

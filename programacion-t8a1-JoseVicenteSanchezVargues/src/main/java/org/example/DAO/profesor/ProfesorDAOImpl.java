@@ -1,6 +1,5 @@
 package org.example.DAO.profesor;
 
-import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
 import org.example.modelo.Profesor;
 import org.example.utils.ConexionBD;

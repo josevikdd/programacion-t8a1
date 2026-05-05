@@ -2,7 +2,6 @@ package org.example.DAO.asignatura;
 
 import org.example.DAO.FactoriaDAO;
 import org.example.DAO.profesor.ProfesorDAOImpl;
-import org.example.main.GestionEscolar;
 import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
 import org.example.modelo.Profesor;
@@ -11,7 +10,6 @@ import org.example.utils.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 

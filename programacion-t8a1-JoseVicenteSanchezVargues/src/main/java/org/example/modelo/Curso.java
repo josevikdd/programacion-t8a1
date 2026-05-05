@@ -1,6 +1,5 @@
 package org.example.modelo;
 
-import org.example.DAO.IOperationsCRUD;
 import org.example.DAO.curso.CursoDAO;
 
 import java.util.ArrayList;
@@ -43,30 +42,9 @@ public class Curso implements CursoDAO {
         return personas;
     }
 
-    public List<Asignatura> getAsignaturas(){
-        return asignaturas;
-    }
-
-    //aquigg para hacer pruebas
-
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public void asignarAsignatura(Asignatura asignatura){
         this.asignaturas.add(asignatura);
         asignatura.setCurso(this);
-    }
-
-    public void asignarPersona(Persona persona){
-        this.getPersonas().add(persona);
-        persona.setCurso(this);
-    }
-
-    public void desasignarPersona(Persona persona){
-        this.getPersonas().remove(persona);
-        persona.setCurso(null);
     }
 
     // Implementamos el metodo hashCode y equals que nos servirán para realizas las comparaciones

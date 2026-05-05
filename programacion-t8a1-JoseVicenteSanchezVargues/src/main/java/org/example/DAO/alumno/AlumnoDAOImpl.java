@@ -1,11 +1,8 @@
 package org.example.DAO.alumno;
 
-import org.example.DAO.FactoriaDAO;
-import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.modelo.Alumno;
 import org.example.modelo.Asignatura;
 import org.example.modelo.Curso;
-import org.example.modelo.Profesor;
 import org.example.utils.ConexionBD;
 
 import java.sql.Connection;
@@ -18,7 +15,6 @@ import java.util.List;
 public class AlumnoDAOImpl implements AlumnoDAO {
 
     private Connection conn = ConexionBD.getConnection();
-    private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
 
     @Override
     public Alumno findById(Long id) {

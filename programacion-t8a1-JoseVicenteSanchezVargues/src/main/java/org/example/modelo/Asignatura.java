@@ -18,7 +18,6 @@ public class Asignatura implements Mostrable{
     private Curso curso;
 
     // Se hace final para que no se pueda cambiar ni reasignar de nuevo
-    private final List<Alumno> alumnos = new ArrayList<>();
     private final List<Examen> examenes = new ArrayList<>();
 
     private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
@@ -47,16 +46,12 @@ public class Asignatura implements Mostrable{
     public Curso getCurso(){
         return curso;
     }
-
-    public List<Alumno> getAlumnos() { return alumnos; }
     public List<Examen> getExamenes() { return examenes; }
 
     public void impartir(Profesor profesor, Curso curso){
         if(asignaturaDAOImpl.getAllByProfe(profesor).size()>2){
             System.out.println("Error. El profesor tiene ya 2 o más asignaturas asignadas.");
         }else{
-            // Creamos la relación entre profesor y asignatura
-            //profesor.getAsignaturas().add(this);
             this.profesor = profesor;
             this.curso = curso;
             asignaturaDAOImpl.update(this);

@@ -3,6 +3,7 @@ package org.example.DAO;
 import org.example.DAO.alumno.AlumnoDAOImpl;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
+import org.example.DAO.examen.ExamenDAOImpl;
 import org.example.DAO.profesor.ProfesorDAOImpl;
 
 public class FactoriaDAO {
@@ -11,6 +12,7 @@ public class FactoriaDAO {
     private static AsignaturaDAOImpl asignaturaDAOImpl = null;
     private static ProfesorDAOImpl profesorDAOImpl = null;
     private static AlumnoDAOImpl alumnoDAOImpl = null;
+    private static ExamenDAOImpl examenDAOImpl = null;
 
     public static CursoDAOImpl getCursoDAO() {
         if (cursoDAOImpl == null) {
@@ -38,5 +40,12 @@ public class FactoriaDAO {
             alumnoDAOImpl = new AlumnoDAOImpl();
         }
         return alumnoDAOImpl;
+    }
+
+    public static ExamenDAOImpl getExamenDAO() {
+        if (examenDAOImpl == null) {
+            examenDAOImpl = new ExamenDAOImpl();
+        }
+        return examenDAOImpl;
     }
 }

@@ -4,6 +4,7 @@ import org.example.DAO.alumno.AlumnoDAOImpl;
 import org.example.DAO.asignatura.AsignaturaDAOImpl;
 import org.example.DAO.curso.CursoDAOImpl;
 import org.example.DAO.FactoriaDAO;
+import org.example.DAO.examen.ExamenDAOImpl;
 import org.example.DAO.profesor.ProfesorDAOImpl;
 import org.example.modelo.*;
 //import org.example.utils.DatosEstaticos;
@@ -22,6 +23,7 @@ public class GestionEscolar {
     private static AsignaturaDAOImpl asignaturaDAOImpl = FactoriaDAO.getAsignaturaDAO();
     private static ProfesorDAOImpl  profesorDAOImpl = FactoriaDAO.getProfesorDAO();
     private static AlumnoDAOImpl alumnoDAOImpl = FactoriaDAO.getAlumnoDAO();
+    private static ExamenDAOImpl examenDAOImpl = FactoriaDAO.getExamenDAO();
 
     public static void main(String[] args) {
 
@@ -483,38 +485,37 @@ public class GestionEscolar {
 
         // Ya tenemos el curso y el profesor, por lo que mostramos las asignaturas que tiene
         if ((curso != null) && (profesor != null)) {
-            boolean encAsig = false;
             System.out.println("======================================================================================");
             System.out.println("Lista de asignaturas del profesor " + profesor.getNombre() + " " + profesor.getApellidos());
             System.out.println("======================================================================================");
-            // Comprobamos que el profesor tiene asignaturas en el curso. Como tenemos que recorrer todas usamos for
-            for (int i = 0; i < profesor.getAsignaturas().size(); i++) {
-                Asignatura a = profesor.getAsignaturas().get(i);
-                // Comprobamos que son iguales
-                if (a.getCurso().equals(curso)) {
-                    a.mostrarDatos();
-                    encAsig = true;
-                }
-            }
+
+            List<Asignatura> asignaturas = asignaturaDAOImpl.getAllByProfeCurso(profesor, curso);
+
             // Si no tiene asignaturas sale del proceso
-            if (encAsig == false) {
+            if (asignaturas.isEmpty()) {
                 System.out.println("No tiene asignaturas asignadas al profesor.");
                 return;
             } else {
-                while (asignatura == null) {
+                for (Asignatura asignaturaListada : asignaturas) {
+                    asignaturaListada.mostrarDatos();
+                }
+                boolean seleccionada = false;
+                while (!seleccionada) {
                     int codigoAsignatura = InputUtils.readInt(sc, "Seleccione un código de asignatura de los mostrados: ");
-                    asignatura = new Asignatura();
-                    asignatura.setCodigo(codigoAsignatura);
-                    asignatura = profesor.getAsignaturas().get(profesor.getAsignaturas().indexOf(asignatura));
-                    if (asignatura == null) {
-                        System.out.println("Error: Asignatura no encontrado.");
+                    asignatura = asignaturaDAOImpl.findById(Long.valueOf(codigoAsignatura));
+                    if (asignaturas.contains(asignatura)){
+                        seleccionada = true;
+                    }
+                    if (!seleccionada) {
+                        System.out.println("Error: Asignatura no encontrada.");
                     }
                 }
             }
 
             // Ya tenemos la asignatura, por lo que mostramos los alumnos matriculados
             if (asignatura != null) {
-                if (asignatura.getAlumnos().size() <= 0) {
+                List<Alumno> alumnos = alumnoDAOImpl.getAllByAsignatura(asignatura);
+                if (alumnos.size() <= 0) {
                     System.out.println("No tiene alumnos asignados a la asignatura.");
                     return;
                 } else {
@@ -524,18 +525,15 @@ public class GestionEscolar {
                         System.out.println("Lista de alumnos matriculados en la asignatura " + asignatura.getNombre());
                         System.out.println("===============================================================================");
                         // Los alumnos solo están matriculados en un único curso así que no hace falta comprobar de qué curso son.
-                        for (int i = 0; i < asignatura.getAlumnos().size(); i++) {
-                            Alumno a = asignatura.getAlumnos().get(i);
-                            a.mostrarDatos();
+                        for (Alumno alumnoListado : alumnos){
+                            alumnoListado.mostrarDatos();
                         }
                         while ((alumno == null) && (salir == false)) {
                             int codigoAlumno = InputUtils.readInt(sc, "Seleccione un código de alumno de los mostrados: ");
                             if (codigoAlumno == -1) {
                                 salir = true;
                             } else {
-                                alumno = new Alumno();
-                                alumno.setCodigo(codigoAlumno);
-                                alumno = asignatura.getAlumnos().get(asignatura.getAlumnos().indexOf(alumno));
+                                alumno = alumnoDAOImpl.findById(Long.valueOf(codigoAlumno));
                                 if (alumno == null) {
                                     System.out.println("Error: Alumno no encontrado.");
                                 }
@@ -552,9 +550,10 @@ public class GestionEscolar {
                                 System.out.println("Nota incorrecta.");
                             }
                         }
-                        if(buscarExamen(codigoExamen)==null) {
+                        if(examenDAOImpl.findById(Long.valueOf(codigoExamen))==null) {
                             // Creamos el examen y lo asignamos al alumno
                             Examen examen = new Examen(codigoExamen, alumno, asignatura, fecha, nota);
+                            examenDAOImpl.add(examen);
 
                             System.out.println("Nota asignada correctamente");
                         }else{
@@ -570,9 +569,9 @@ public class GestionEscolar {
     /**
      * Buscar examen en todos los cursos
      */
-    private static Examen buscarExamen(int codigo) {
+    /*private static Examen buscarExamen(int codigo) {
         // Creamos una variable examen para buscarla en los cursos
-        Examen examen = new Examen();
+        Examen examen = new Examen(codigo);
         examen.setCodigo(codigo);
         // Variable para parar el while cuando la encuentra
         boolean enc = false;
@@ -603,7 +602,7 @@ public class GestionEscolar {
         } else {
             return null;
         }
-    }
+    }*/
 
     /**
      * Alta docencia

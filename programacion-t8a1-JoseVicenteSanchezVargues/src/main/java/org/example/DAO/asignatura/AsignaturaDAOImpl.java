@@ -163,4 +163,32 @@ public class AsignaturaDAOImpl implements AsignaturaDAO{
             return null;
         }
     }
+
+    @Override
+    public List<Asignatura> getAllByProfeCurso(Profesor profesor, Curso curso) {
+        List<Asignatura> asignaturas = new ArrayList<Asignatura>();
+
+        try {
+            String sql = "SELECT * FROM asignaturas WHERE c_profesor=? AND c_curso=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, profesor.getCodigo());
+            ps.setInt(2, curso.getCodigo());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String nombre = rs.getString("nombre");
+
+                Asignatura asignatura = new Asignatura(codigo, nombre);
+                asignaturas.add(asignatura);
+            }
+            rs.close();
+            ps.close();
+            return asignaturas;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -23,13 +23,17 @@ public class Examen implements Comparable<Examen>{
         asignatura.getExamenes().add(this);
     }
 
-    public Examen() {
+    public Examen(int codigo) {
 
     }
+
+    public int getCodigo(){ return this.codigo; }
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
+
+    public float getNota() { return this.nota; }
 
     public LocalDate getFecha() {
         return fecha;

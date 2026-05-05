@@ -10,4 +10,5 @@ import java.util.List;
 public interface AsignaturaDAO extends IOperationsCRUD<Asignatura> {
     public List<Asignatura> getAllByCurso(Curso curso);
     public List<Asignatura> getAllByProfe(Profesor profesor);
+    public List<Asignatura> getAllByProfeCurso(Profesor profesor, Curso curso);
 }
